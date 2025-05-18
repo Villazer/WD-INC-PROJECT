@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Black Arc Esports | Elite Gaming Team</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0f0f13',
+                        secondary: '#1a1a24',
+                        accent: '#8a2be2',
+                        neon: '#ff00ff',
+                        highlight: '#ff3860',
+                    },
+                    fontFamily: {
+                        'sans': ['Rajdhani', 'sans-serif'],
+                        'mono': ['Major Mono Display', 'monospace'],
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        glow: {
+                            'from': { 'text-shadow': '0 0 5px #fff, 0 0 10px #fff, 0 0 15px #ff00ff, 0 0 20px #ff00ff' },
+                            'to': { 'text-shadow': '0 0 10px #fff, 0 0 20px #fff, 0 0 30px #ff00ff, 0 0 40px #ff00ff' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Major+Mono+Display&display=swap');
+        
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background-color: #0f0f13;
+            color: white;
+            overflow-x: hidden;
+        }
+        
+        .bg-grid {
+            background-image: 
+                linear-gradient(rgba(138, 43, 226, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(138, 43, 226, 0.1) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+        
+        .nav-link {
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background: linear-gradient(90deg, #8a2be2, #ff00ff);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .btn-glow {
+            box-shadow: 0 0 10px rgba(138, 43, 226, 0.5), 0 0 20px rgba(255, 0, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-glow:hover {
+            box-shadow: 0 0 15px rgba(138, 43, 226, 0.8), 0 0 30px rgba(255, 0, 255, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+            border: 1px solid rgba(138, 43, 226, 0.3);
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 0, 255, 0.7);
+            box-shadow: 0 10px 20px rgba(138, 43, 226, 0.2);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(90deg, #8a2be2, #ff00ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .gradient-border {
+            position: relative;
+        }
+        
+        .gradient-border::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: inherit;
+            padding: 2px;
+            background: linear-gradient(135deg, #8a2be2, #ff00ff);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+        
+        .scroll-smooth {
+            scroll-behavior: smooth;
+        }
+        
+        @media (max-width: 768px) {
+            .mobile-menu {
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+            }
+            
+            .mobile-menu.active {
+                transform: translateX(0);
+            }
+        }
+
+                .gradient-border {
+        position: relative;
+        }
+        .gradient-border::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        border-radius: inherit;
+        padding: 2px;
+        background: linear-gradient(135deg, #8a2be2, #ff00ff);
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        pointer-events: none;
+        }
+        .hamburger {
+            transition: all 0.3s ease;
+        }
+        
+        .hamburger.active {
+            transform: rotate(90deg);
+        }
+        
+        .nav-menu {
+            transition: all 0.3s ease;
+            max-height: 0;
+            overflow: hidden;
+        }
+        
+        .nav-menu.active {
+            max-height: 500px;
+        }
+
+    </style>
+</head>
+<body class="bg-grid scroll-smooth">
+<!-- Navigation -->
+<nav class="fixed w-full z-50 bg-primary/90 backdrop-blur-md border-b border-secondary">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16 items-center">
+            <!-- Logo -->
+                <a href="/index.html" class="flex-shrink-0 flex items-center">
+                    <div class="gradient-border rounded-full p-1">
+                        <div class="w-10 h-10 rounded-full bg-violet-500 flex items-center justify-center">
+                            <img src="/images/LogoNavBarAndroid.png" alt="LogoPic" class="w-8 h-8 object-contain filter grayscale hover:grayscale-0">
+                        </div>
+                    </div>
+                    <span class="ml-3 text-xl font-bold gradient-text hidden sm:block">BLACK ARC</span>
+                </a>
+
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex space-x-8">
+                <a href="#home" class="nav-link text-white font-semibold">HOME</a>
+                <a href="#about" class="nav-link text-white font-semibold">ABOUT</a>
+                <a href="/pages/All teams/team-view.html" class="nav-link text-white font-semibold">TEAMS</a>
+                <a href="/pages/schedule display/schedule-view.html" class="nav-link text-white font-semibold">EVENTS</a>
+                <a href="/pages/Join Form/join-view.html" class="nav-link text-white font-semibold">JOIN US</a>
+                <a href="#contact" class="nav-link text-white font-semibold">CONTACT</a>
+            </div>
+
+            <!-- Mobile Hamburger Button -->
+            <button id="hamburger" class="md:hidden text-white focus:outline-none">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+        </div>
+    </div>
+            <!-- Breadcrumbs -->
+        <div class="container mx-auto px-4 pb-3 hidden md:block">
+            <div class="text-sm text-gray-400">
+                <a href="#" class="text-neon">Home</a> / 
+            </div>
+        </div>
+    <!-- Mobile Menu -->
+    <div id="navMenu" class="nav-menu md:hidden bg-primary/95 backdrop-blur-md border-t border-secondary">
+        <div class="px-6 py-4 flex flex-col space-y-3">
+                <a href="#home" class="nav-link text-white font-semibold">HOME</a>
+                <a href="#about" class="nav-link text-white font-semibold">ABOUT</a>
+                <a href="/pages/All teams/team-view.html" class="nav-link text-white font-semibold">TEAMS</a>
+                <a href="/pages/schedule display/schedule-view.html" class="nav-link text-white font-semibold">EVENTS</a>
+                <a href="/pages/Join Form/join-view.html" class="nav-link text-white font-semibold">JOIN US</a>
+                <a href="#contact" class="nav-link text-white font-semibold">CONTACT</a>
+        </div>
+    </div>
+</nav>
+    
+    <!-- Hero Section -->
+    <section id="home" class="pt-24 pb-16 md:pt-32 md:pb-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto">
+            <div class="absolute -right-20 -top-20 w-64 h-64 rounded-full bg-accent/20 blur-3xl"></div>
+            <div class="absolute -left-20 -bottom-20 w-64 h-64 rounded-full bg-neon/20 blur-3xl"></div>
+            
+            <div class="relative z-10 flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-12 md:mb-0">
+                    <h1 class="text-4xl md:text-6xl font-bold mb-6">
+                        <span class="gradient-text">BLACK ARC</span><br>
+                        <span class="text-white">ESPORTS</span>
+                    </h1>
+                    <p class="text-gray-300 text-lg md:text-xl mb-8 max-w-lg">
+                        Where elite gamers unite. Compete at the highest level with our professional teams across multiple gaming titles.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#join" class="btn-glow px-6 py-3 rounded-full bg-gradient-to-r from-accent to-neon text-white font-bold">JOIN US</a>
+                        <a href="#teams" class="btn-glow px-6 py-3 rounded-full bg-secondary text-white font-bold border border-accent/50">OUR TEAMS</a>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center">
+                    <div class="relative">
+                        <div class="absolute inset-0 rounded-full bg-gradient-to-r from-accent to-neon blur-xl opacity-70 animate-pulse-slow"></div>
+                        <div class="gradient-border rounded-full p-2 relative">
+                            <img src="/images/LogoHeaderPC.png" alt="Black Arc Esports Logo" class="w-64 h-64 md:w-80 md:h-80 rounded-full object-cover">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- About Section -->
+    <section id="about" class="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-secondary/50">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-bold mb-4">
+                    <span class="gradient-text">ABOUT US</span>
+                </h2>
+                <div class="w-20 h-1 bg-gradient-to-r from-accent to-neon mx-auto"></div>
+            </div>
+            
+            <div class="flex flex-col md:flex-row items-center">
+                    <div class="md:w-1/2 mb-12 md:mb-0 md:pr-12">
+                        <div class="gradient-border rounded-xl overflow-hidden relative">
+                            <div id="teamCarousel" class="flex transition-transform duration-700 ease-in-out w-full">
+                            <img src="images/Jm.jpg" alt="Team Photo 1" class="w-full h-auto flex-shrink-0">
+                            <img src="images/villa.png" alt="Team Photo 2" class="w-full h-auto flex-shrink-0">
+                            <img src="images/earl (1).jpg" alt="Team Photo 3" class="w-full h-auto flex-shrink-0">
+                            </div>
+
+                            <!-- Optional: Left/Right buttons -->
+                            <button onclick="prevSlide()" class="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-80 z-10">
+                            ‹
+                            </button>
+                            <button onclick="nextSlide()" class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-80 z-10">
+                            ›
+                            </button>
+                        </div>
+                    </div>
+                <div class="md:w-1/2">
+                    <h3 class="text-2xl md:text-3xl font-bold mb-6 text-white">OUR STORY</h3>
+                    <p class="text-gray-300 mb-6">
+                        Founded in 2020, Black Arc Esports has rapidly ascended to become one of the most respected names in competitive gaming. What began as a small group of passionate gamers has evolved into a professional organization with multiple championship-winning teams.
+                    </p>
+                    <p class="text-gray-300 mb-6">
+                        Our mission is to push the boundaries of esports performance while fostering a community that values excellence, integrity, and innovation. We believe in creating opportunities for talented players to shine on the global stage.
+                    </p>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-primary/50 p-4 rounded-lg border border-accent/20">
+                            <h4 class="text-neon font-bold mb-2">50+</h4>
+                            <p class="text-gray-300 text-sm">TOURNAMENTS WON</p>
+                        </div>
+                        <div class="bg-primary/50 p-4 rounded-lg border border-accent/20">
+                            <h4 class="text-neon font-bold mb-2">12</h4>
+                            <p class="text-gray-300 text-sm">PRO TEAMS</p>
+                        </div>
+                        <div class="bg-primary/50 p-4 rounded-lg border border-accent/20">
+                            <h4 class="text-neon font-bold mb-2">1M+</h4>
+                            <p class="text-gray-300 text-sm">COMMUNITY MEMBERS</p>
+                        </div>
+                        <div class="bg-primary/50 p-4 rounded-lg border border-accent/20">
+                            <h4 class="text-neon font-bold mb-2">24/7</h4>
+                            <p class="text-gray-300 text-sm">DEDICATED SUPPORT</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Teams Section -->
+    <section id="teams" class="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-primary">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-bold mb-4">
+                    <span class="gradient-text">OUR TEAMS</span>
+                </h2>
+                <div class="w-20 h-1 bg-gradient-to-r from-accent to-neon mx-auto"></div>
+                <p class="text-gray-300 max-w-2xl mx-auto mt-6">
+                    We field professional teams across the most competitive esports titles. Each squad is carefully curated for maximum synergy and performance.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Team Card 1 -->
+                <div class="card-hover bg-secondary rounded-xl p-6">
+                    <div class="flex items-center mb-6">
+                        <div class="w-16 h-16 rounded-full bg-gradient-to-br from-accent to-neon flex items-center justify-center">
+                            <i class="fas fa-gamepad text-2xl text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-bold ml-4 text-white">VALORANT</h3>
+                    </div>
+                    <p class="text-gray-300 mb-6">
+                        Our Valorant team dominates regional competitions with innovative strategies and pinpoint execution.
+                    </p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-neon">CURRENT RANK: #2 NA</span>
+                        <a href="#" class="text-white hover:text-neon"><i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Team Card 2 -->
+                <div class="card-hover bg-secondary rounded-xl p-6">
+                    <div class="flex items-center mb-6">
+                        <div class="w-16 h-16 rounded-full bg-gradient-to-br from-accent to-neon flex items-center justify-center">
+                            <i class="fas fa-headset text-2xl text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-bold ml-4 text-white">LEAGUE OF LEGENDS</h3>
+                    </div>
+                    <p class="text-gray-300 mb-6">
+                        The LoL squad brings disciplined macro play and explosive teamfighting to every match.
+                    </p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-neon">CURRENT RANK: #5 EU</span>
+                        <a href="#" class="text-white hover:text-neon"><i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Team Card 3 -->
+                <div class="card-hover bg-secondary rounded-xl p-6">
+                    <div class="flex items-center mb-6">
+                        <div class="w-16 h-16 rounded-full bg-gradient-to-br from-accent to-neon flex items-center justify-center">
+                            <i class="fas fa-trophy text-2xl text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-bold ml-4 text-white">CS:GO</h3>
+                    </div>
+                    <p class="text-gray-300 mb-6">
+                        Precision aim and tactical mastery define our championship-winning CS:GO roster.
+                    </p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-neon">CURRENT RANK: #3 WORLD</span>
+                        <a href="#" class="text-white hover:text-neon"><i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Team Card 4 -->
+                <div class="card-hover bg-secondary rounded-xl p-6">
+                    <div class="flex items-center mb-6">
+                        <div class="w-16 h-16 rounded-full bg-gradient-to-br from-accent to-neon flex items-center justify-center">
+                            <i class="fas fa-chess-knight text-2xl text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-bold ml-4 text-white">DOTA 2</h3>
+                    </div>
+                    <p class="text-gray-300 mb-6">
+                        Innovative drafts and mechanical brilliance power our Dota 2 team's success.
+                    </p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-neon">CURRENT RANK: #8 WORLD</span>
+                        <a href="#" class="text-white hover:text-neon"><i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Team Card 5 -->
+                <div class="card-hover bg-secondary rounded-xl p-6">
+                    <div class="flex items-center mb-6">
+                        <div class="w-16 h-16 rounded-full bg-gradient-to-br from-accent to-neon flex items-center justify-center">
+                            <i class="fas fa-running text-2xl text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-bold ml-4 text-white">APEX LEGENDS</h3>
+                    </div>
+                    <p class="text-gray-300 mb-6">
+                        Lightning-fast rotations and elite gunplay make our Apex squad a consistent threat.
+                    </p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-neon">CURRENT RANK: #1 NA</span>
+                        <a href="#" class="text-white hover:text-neon"><i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Team Card 6 -->
+                <div class="card-hover bg-secondary rounded-xl p-6">
+                    <div class="flex items-center mb-6">
+                        <div class="w-16 h-16 rounded-full bg-gradient-to-br from-accent to-neon flex items-center justify-center">
+                            <i class="fas fa-bolt text-2xl text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-bold ml-4 text-white">RAINBOW SIX</h3>
+                    </div>
+                    <p class="text-gray-300 mb-6">
+                        Tactical depth and explosive executes define our Siege team's playstyle.
+                    </p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-neon">CURRENT RANK: #4 EU</span>
+                        <a href="#" class="text-white hover:text-neon"><i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-16">
+                <a href="/pages/All teams/team-view.html" class="btn-glow inline-block px-8 py-3 rounded-full bg-gradient-to-r from-accent to-neon text-white font-bold">
+                    VIEW ALL TEAMS <i class="fas fa-arrow-right ml-2" ></i>
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Media Section -->
+    <div id="media" class="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-secondary/50">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-bold mb-4">
+                    <span class="gradient-text">MEDIA</span>
+                </h2>
+                <div class="w-20 h-1 bg-gradient-to-r from-accent to-neon mx-auto"></div>
+                <p class="text-gray-300 max-w-2xl mx-auto mt-6">
+                    Catch up on our latest matches, highlights, and behind-the-scenes content.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Video 1 -->
+                    <div class="video-card card-hover rounded-xl overflow-hidden bg-primary relative group">
+                    <div class="relative pt-[56.25%]">
+                        <video
+                        class="video-element absolute inset-0 w-full h-full object-cover brightness-75 transition duration-300"
+                        src="video/Casters React to TH Wo0t ACE Against Team Liquid _ VCT EMEA 2025.mp4"
+                        poster="images/Die For You Music Video GIF by VALORANT Esports.gif"
+                        ></video>
+
+                        <!-- Overlay Controls -->
+                        <div class="video-overlay absolute inset-0 flex flex-col justify-end bg-gradient-to-br from-accent/20 to-neon/20">
+                        <div class="flex justify-between items-center p-3">
+                            <div class="flex items-center space-x-3">
+                            <button class="play-pause-btn text-white/80 hover:text-white text-2xl">
+                                <i class="fas fa-play"></i>
+                            </button>
+                            <span class="time-display text-sm text-white/80 font-mono">0:00 / 0:00</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                            <button class="fullscreen-btn text-white/70 hover:text-neon text-xl">
+                                <i class="fas fa-expand"></i>
+                            </button>
+                            <button class="close-video-btn text-white/70 hover:text-neon text-2xl">
+                                &times;
+                            </button>
+                            </div>
+                        </div>
+                        <input type="range" class="video-progress w-full h-1 accent-neon cursor-pointer bg-gray-600" min="0" value="0" step="0.1" />
+                        </div>
+                    </div>
+
+                    <!-- Optional: Custom Info Section -->
+                    <div class="p-4">
+                        <h3 class="text-xl font-bold text-white mb-2">VALORANT CHAMPIONSHIP FINALS</h3>
+                        <p class="text-gray-300 text-sm mb-4">Watch our team's incredible comeback in the grand finals</p>
+                    </div>
+                    </div>
+
+
+                
+                <!-- Video 2 -->
+                <div class="video-card card-hover rounded-xl overflow-hidden bg-primary relative group">
+                        <div class="relative pt-[56.25%]">
+                            <video
+                            class="video-element absolute inset-0 w-full h-full object-cover brightness-75 transition duration-300"
+                            src="video/AWTF Re Opening Hosted Tour.mp4"
+                            poster="images/destiny-gaming-session-header-image.jpg"
+                            ></video>
+
+                            <!-- Overlay Controls -->
+                            <div class="video-overlay absolute inset-0 flex flex-col justify-end bg-gradient-to-br from-accent/20 to-neon/20">
+                            <div class="flex justify-between items-center p-3">
+                                <div class="flex items-center space-x-3">
+                                <button class="play-pause-btn text-white/80 hover:text-white text-2xl">
+                                    <i class="fas fa-play"></i>
+                                </button>
+                                <span class="time-display text-sm text-white/80 font-mono">0:00 / 0:00</span>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                <button class="fullscreen-btn text-white/70 hover:text-neon text-xl">
+                                    <i class="fas fa-expand"></i>
+                                </button>
+                                <button class="close-video-btn text-white/70 hover:text-neon text-2xl">
+                                    &times;
+                                </button>
+                                </div>
+                            </div>
+                            <input type="range" class="video-progress w-full h-1 accent-neon cursor-pointer bg-gray-600" min="0" value="0" step="0.1" />
+                            </div>
+                        </div>
+                    <div class="p-4">
+                        <h3 class="text-xl font-bold text-white mb-2">TEAM HOUSE TOUR 2023</h3>
+                        <p class="text-gray-300 text-sm mb-4">Exclusive look at our state-of-the-art gaming facility</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs text-neon">1 WEEK AGO</span>
+                            <span class="text-xs text-gray-400"><i class="fas fa-eye mr-1"></i> 512K</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Video 3 -->
+                    <div class="video-card card-hover rounded-xl overflow-hidden bg-primary relative group">
+                    <div class="relative pt-[56.25%]">
+                        <video
+                        class="video-element absolute inset-0 w-full h-full object-cover brightness-75 transition duration-300"
+                        src="video/CADIAN INSANE 1v4 CLUTCH + TEAM REACTION.mp4"
+                        poster="images/maxresdefault.jpg"
+                        ></video>
+
+                        <!-- Overlay Controls -->
+                        <div class="video-overlay absolute inset-0 flex flex-col justify-end bg-gradient-to-br from-accent/20 to-neon/20">
+                        <div class="flex justify-between items-center p-3">
+                            <div class="flex items-center space-x-3">
+                            <button class="play-pause-btn text-white/80 hover:text-white text-2xl">
+                                <i class="fas fa-play"></i>
+                            </button>
+                            <span class="time-display text-sm text-white/80 font-mono">0:00 / 0:00</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                            <button class="fullscreen-btn text-white/70 hover:text-neon text-xl">
+                                <i class="fas fa-expand"></i>
+                            </button>
+                            <button class="close-video-btn text-white/70 hover:text-neon text-2xl">
+                                &times;
+                            </button>
+                            </div>
+                        </div>
+                        <input type="range" class="video-progress w-full h-1 accent-neon cursor-pointer bg-gray-600" min="0" value="0" step="0.1" />
+                        </div>
+                    </div>
+
+                    <div class="p-4">
+                        <h3 class="text-xl font-bold text-white mb-2">CS:GO ACE CLUTCH MOMENT</h3>
+                        <p class="text-gray-300 text-sm mb-4">Incredible 1v5 play from our star player</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs text-neon">3 DAYS AGO</span>
+                            <span class="text-xs text-gray-400"><i class="fas fa-eye mr-1"></i> 189K</span>
+                        </div>
+                    </div>
+
+            </div>
+            </div>
+            <div class="mt-12 flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-8">
+                <a href="#" class="btn-glow px-6 py-3 rounded-full bg-gradient-to-r from-accent to-neon text-white font-bold flex items-center">
+                    <i class="fab fa-twitch text-xl mr-2"></i> WATCH LIVE
+                </a>
+                <a href="#" class="btn-glow px-6 py-3 rounded-full bg-secondary text-white font-bold border border-accent/50 flex items-center">
+                    <i class="fab fa-youtube text-xl mr-2"></i> YOUTUBE
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Join Us Section -->
+    <section id="join" class="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-primary">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-bold mb-4">
+                    <span class="gradient-text">JOIN US</span>
+                </h2>
+                <div class="w-20 h-1 bg-gradient-to-r from-accent to-neon mx-auto"></div>
+                <p class="text-gray-300 max-w-2xl mx-auto mt-6">
+                    We're always looking for talented players, content creators, and staff to join our organization.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+                <!-- Player Card -->
+                <div class="card-hover bg-secondary rounded-xl p-8 text-center">
+                    <div class="w-20 h-20 rounded-full bg-gradient-to-br from-accent to-neon flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-gamepad text-3xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">PLAYERS</h3>
+                    <p class="text-gray-300 mb-6">
+                        Are you a top-tier competitor? Submit your stats and join our tryouts.
+                    </p>
+                    <a href="/pages/Join Form/join-view.html" class="btn-glow inline-block px-6 py-2 rounded-full bg-gradient-to-r from-accent to-neon text-white font-bold text-sm">
+                        APPLY NOW
+                    </a>
+                </div>
+                
+                <!-- Creator Card -->
+                <div class="card-hover bg-secondary rounded-xl p-8 text-center">
+                    <div class="w-20 h-20 rounded-full bg-gradient-to-br from-accent to-neon flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-video text-3xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">CONTENT CREATORS</h3>
+                    <p class="text-gray-300 mb-6">
+                        Join our creator network and collaborate with our players and brand.
+                    </p>
+                    <a href="/pages/Join Form/join-view.html" class="btn-glow inline-block px-6 py-2 rounded-full bg-gradient-to-r from-accent to-neon text-white font-bold text-sm">
+                        APPLY NOW
+                    </a>
+                </div>
+                
+                <!-- Staff Card -->
+                <div class="card-hover bg-secondary rounded-xl p-8 text-center">
+                    <div class="w-20 h-20 rounded-full bg-gradient-to-br from-accent to-neon flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-users text-3xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">STAFF</h3>
+                    <p class="text-gray-300 mb-6">
+                        Coaches, analysts, managers - help us build championship teams.
+                    </p>
+                    <a href="/pages/Join Form/join-view.html" class="btn-glow inline-block px-6 py-2 rounded-full bg-gradient-to-r from-accent to-neon text-white font-bold text-sm">
+                        APPLY NOW
+                    </a>
+                </div>
+            </div>
+            
+            <div class="gradient-border rounded-xl p-8 bg-secondary/50">
+                <h3 class="text-2xl md:text-3xl font-bold text-white mb-6 text-center">JOIN OUR COMMUNITY</h3>
+                <p class="text-gray-300 mb-8 text-center max-w-2xl mx-auto">
+                    Even if you're not ready to join professionally, become part of our growing community of esports fans and gamers.
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                    <input type="email" placeholder="Your Email" class="px-6 py-3 rounded-full bg-primary border border-accent/50 text-white focus:outline-none focus:ring-2 focus:ring-neon">
+                    <button class="btn-glow px-6 py-3 rounded-full bg-gradient-to-r from-accent to-neon text-white font-bold">
+                        SUBSCRIBE <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+                <div class="flex justify-center space-x-6 mt-8">
+                    <a href="#" class="text-neon hover:text-white text-2xl"><i class="fab fa-discord"></i></a>
+                    <a href="#" class="text-neon hover:text-white text-2xl"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="text-neon hover:text-white text-2xl"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Contact Section -->
+    <section id="contact" class="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-secondary/50">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-bold mb-4">
+                    <span class="gradient-text">CONTACT US</span>
+                </h2>
+                <div class="w-20 h-1 bg-gradient-to-r from-accent to-neon mx-auto"></div>
+                <p class="text-gray-300 max-w-2xl mx-auto mt-6">
+                    Have questions or partnership inquiries? Get in touch with our team.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <div>
+                    <h3 class="text-2xl font-bold text-white mb-6">SEND US A MESSAGE</h3>
+                    <form class="space-y-6">
+                        <div>
+                            <label for="name" class="block text-gray-300 mb-2">Your Name</label>
+                            <input type="text" id="name" class="w-full px-4 py-3 rounded-lg bg-primary border border-accent/50 text-white focus:outline-none focus:ring-2 focus:ring-neon">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-gray-300 mb-2">Your Email</label>
+                            <input type="email" id="email" class="w-full px-4 py-3 rounded-lg bg-primary border border-accent/50 text-white focus:outline-none focus:ring-2 focus:ring-neon">
+                        </div>
+                        <div>
+                            <label for="subject" class="block text-gray-300 mb-2">Subject</label>
+                            <select id="subject" class="w-full px-4 py-3 rounded-lg bg-primary border border-accent/50 text-white focus:outline-none focus:ring-2 focus:ring-neon">
+                                <option value="">Select a topic</option>
+                                <option value="partnership">Partnership Inquiry</option>
+                                <option value="recruitment">Recruitment</option>
+                                <option value="media">Media Inquiry</option>
+                                <option value="general">General Question</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="message" class="block text-gray-300 mb-2">Your Message</label>
+                            <textarea id="message" rows="5" class="w-full px-4 py-3 rounded-lg bg-primary border border-accent/50 text-white focus:outline-none focus:ring-2 focus:ring-neon"></textarea>
+                        </div>
+                        <button type="submit" class="btn-glow w-full px-6 py-3 rounded-full bg-gradient-to-r from-accent to-neon text-white font-bold">
+                            SEND MESSAGE <i class="fas fa-paper-plane ml-2"></i>
+                        </button>
+                    </form>
+                </div>
+                
+                <div>
+                    <h3 class="text-2xl font-bold text-white mb-6">OUR INFO</h3>
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-accent to-neon flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-map-marker-alt text-white"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h4 class="text-lg font-bold text-white mb-1">HEADQUARTERS</h4>
+                                <p class="text-gray-300">123 Esports Avenue<br>Los Angeles, CA 90015</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-accent to-neon flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-envelope text-white"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h4 class="text-lg font-bold text-white mb-1">EMAIL</h4>
+                                <p class="text-gray-300">contact@blackarc.gg<br>partners@blackarc.gg</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-accent to-neon flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-phone-alt text-white"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h4 class="text-lg font-bold text-white mb-1">PHONE</h4>
+                                <p class="text-gray-300">+1 (555) 123-4567<br>Mon-Fri, 9AM-5PM PST</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-12">
+                        <h4 class="text-lg font-bold text-white mb-4">FOLLOW US</h4>
+                        <div class="flex space-x-4">
+                            <a href="#" class="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-neon hover:text-white border border-accent/50 hover:bg-accent/20 transition">
+                                <i class="fab fa-twitter text-xl"></i>
+                            </a>
+                            <a href="#" class="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-neon hover:text-white border border-accent/50 hover:bg-accent/20 transition">
+                                <i class="fab fa-instagram text-xl"></i>
+                            </a>
+                            <a href="#" class="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-neon hover:text-white border border-accent/50 hover:bg-accent/20 transition">
+                                <i class="fab fa-twitch text-xl"></i>
+                            </a>
+                            <a href="#" class="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-neon hover:text-white border border-accent/50 hover:bg-accent/20 transition">
+                                <i class="fab fa-youtube text-xl"></i>
+                            </a>
+                            <a href="#" class="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-neon hover:text-white border border-accent/50 hover:bg-accent/20 transition">
+                                <i class="fab fa-discord text-xl"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="py-12 px-4 sm:px-6 lg:px-8 bg-primary border-t border-secondary">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center mb-6 md:mb-0">
+                    <div class="gradient-border rounded-full p-1">
+                        <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
+                            <span class="font-mono font-bold text-xl gradient-text">BA</span>
+                        </div>
+                    </div>
+                    <span class="ml-3 text-xl font-bold gradient-text">BLACK ARC ESPORTS</span>
+                </div>
+                
+                <div class="flex space-x-6">
+                  <ul class="flex space-x-6">
+                        <li><a href="#" class="text-gray-400 hover:text-neon-pink transition"><i class="fab fa-twitter mr-2"></i> Twitter</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-neon-pink transition"><i class="fab fa-instagram mr-2"></i> Instagram</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-neon-pink transition"><i class="fab fa-twitch mr-2"></i> Twitch</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-neon-pink transition"><i class="fab fa-discord mr-2"></i> Discord</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-secondary flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-500 text-sm mb-4 md:mb-0">
+                    &copy; 2023 Black Arc Esports. All rights reserved.
+                </p>
+                
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-500 hover:text-white text-sm">PRIVACY POLICY</a>
+                    <a href="#" class="text-gray-500 hover:text-white text-sm">TERMS OF SERVICE</a>
+                    <a href="#" class="text-gray-500 hover:text-white text-sm">COOKIE POLICY</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+       // Mobile menu toggle
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('navMenu');
+        
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+        // Smooth scrolling for all links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Add shadow to navbar on scroll
+        window.addEventListener('scroll', function() {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 10) {
+                nav.classList.add('shadow-lg');
+            } else {
+                nav.classList.remove('shadow-lg');
+            }
+        });
+
+        // Carousel Pictures
+        const carousel = document.getElementById('teamCarousel');
+        const slides = carousel.children;
+        let currentIndex = 0;
+
+        function showSlide(index) {
+            carousel.style.transform = `translateX(-${index * 100}%)`;
+        }
+
+        function nextSlide() {
+            currentIndex = (currentIndex + 1) % slides.length;
+            showSlide(currentIndex);
+        }
+
+        function prevSlide() {
+            currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+            showSlide(currentIndex);
+        }
+        
+        // Video-player
+        document.querySelectorAll('.video-card').forEach(card => {
+        const video = card.querySelector('.video-element');
+        const playBtn = card.querySelector('.play-pause-btn');
+        const closeBtn = card.querySelector('.close-video-btn');
+        const fullscreenBtn = card.querySelector('.fullscreen-btn');
+        const timeDisplay = card.querySelector('.time-display');
+        const progress = card.querySelector('.video-progress');
+        const icon = playBtn.querySelector('i');
+
+        // Play/pause
+        playBtn.addEventListener('click', () => {
+        if (video.paused) {
+            video.play();
+            icon.classList.replace('fa-play', 'fa-pause');
+        } else {
+            video.pause();
+            icon.classList.replace('fa-pause', 'fa-play');
+        }
+        });
+
+        // Close/reset
+        closeBtn.addEventListener('click', () => {
+        video.pause();
+        video.currentTime = 0;
+        icon.classList.replace('fa-pause', 'fa-play');
+        progress.value = 0;
+        updateTime(0, video.duration);
+        });
+
+        // Fullscreen
+        fullscreenBtn.addEventListener('click', () => {
+        if (document.fullscreenElement) {
+            document.exitFullscreen();
+        } else {
+            video.requestFullscreen().catch(err => console.error(err));
+        }
+        });
+
+        // Seek
+        progress.addEventListener('input', () => {
+        video.currentTime = progress.value;
+        });
+
+        // Time updates
+        video.addEventListener('timeupdate', () => {
+        progress.value = video.currentTime;
+        updateTime(video.currentTime, video.duration);
+        });
+
+        video.addEventListener('loadedmetadata', () => {
+        progress.max = video.duration;
+        updateTime(0, video.duration);
+        });
+
+        video.addEventListener('ended', () => {
+        video.pause();
+        video.currentTime = 0;
+        video.load(); // 👈 forces the poster to show again
+
+        icon.classList.replace('fa-pause', 'fa-play');
+        progress.value = 0;
+        updateTime(0, video.duration);
+        });
+
+        function updateTime(current, total) {
+        const format = sec => {
+            const m = Math.floor(sec / 60);
+            const s = Math.floor(sec % 60).toString().padStart(2, '0');
+            return `${m}:${s}`;
+        };
+        timeDisplay.textContent = `${format(current)} / ${format(total || 0)}`;
+        }
+    });
+    </script>
+
+<div id="videoModal" class="fixed inset-0 bg-black/90 backdrop-blur-sm flex items-center justify-center z-50 hidden">
+</body>
+</html>

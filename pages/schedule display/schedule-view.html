@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head  class="sticky top-0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Black Arc Esports | Events & Schedule</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+        <script>
+            tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0f0f13',
+                        secondary: '#1a1a24',
+                        accent: '#8a2be2',
+                        neon: '#ff00ff',
+                        highlight: '#ff3860',
+                    },
+                    fontFamily: {
+                        'sans': ['Rajdhani', 'sans-serif'],
+                        'mono': ['Major Mono Display', 'monospace'],
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        glow: {
+                            'from': { 'text-shadow': '0 0 5px #fff, 0 0 10px #fff, 0 0 15px #ff00ff, 0 0 20px #ff00ff' },
+                            'to': { 'text-shadow': '0 0 10px #fff, 0 0 20px #fff, 0 0 30px #ff00ff, 0 0 40px #ff00ff' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Major+Mono+Display&display=swap');
+        
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background-color: #0f0f13;
+            color: white;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .bg-grid {
+            background-image: 
+                linear-gradient(rgba(138, 43, 226, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(138, 43, 226, 0.1) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+        
+        .event-card {
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+            background: linear-gradient(145deg, #121218 0%, #0e0e13 100%);
+        }
+        
+        .event-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(79, 70, 229, 0.5);
+            box-shadow: 0 0 12px 3px rgba(79, 70, 229, 0.2);
+        }
+        
+        .filter-btn.active {
+            background-color: rgba(79, 70, 229, 0.2);
+            border-color: rgba(79, 70, 229, 0.5);
+            box-shadow: 0 0 8px 2px rgba(79, 70, 229, 0.2);
+        }
+        
+        .game-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(145deg, #1e1e2e 0%, #121218 100%);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .event-type-badge {
+            position: absolute;
+            top: -10px;
+            right: 12px;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .scroll-container {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(79, 70, 229, 0.5) transparent;
+        }
+        
+        .scroll-container::-webkit-scrollbar {
+            height: 6px;
+        }
+        
+        .scroll-container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        .scroll-container::-webkit-scrollbar-thumb {
+            background-color: rgba(79, 70, 229, 0.5);
+            border-radius: 20px;
+        }
+        
+        .animate-fade-in {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+                .hamburger {
+            transition: all 0.3s ease;
+        }
+        
+        .hamburger.active {
+            transform: rotate(90deg);
+        }
+        
+        .nav-menu {
+            transition: all 0.3s ease;
+            max-height: 0;
+            overflow: hidden;
+        }
+        
+        .nav-menu.active {
+            max-height: 500px;
+        }
+
+                .gradient-text {
+        background: linear-gradient(90deg, #8a2be2, #ff00ff);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        }
+
+    </style>
+
+    <!-- Navigation -->
+<nav class="fixed top-0 w-full z-50 bg-primary/90 backdrop-blur-md border-b border-secondary">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16 items-center">
+            <!-- Logo -->
+                <a href="/index.html" class="flex-shrink-0 flex items-center">
+                    <div class="gradient-border rounded-full p-1">
+                        <div class="w-10 h-10 rounded-full bg-violet-500 flex items-center justify-center">
+                            <img src="/images/LogoNavBarAndroid.png" alt="LogoPic" class="w-8 h-8 object-contain filter grayscale hover:grayscale-0">
+                        </div>
+                    </div>
+                    <span class="ml-3 text-xl font-bold gradient-text hidden sm:block">BLACK ARC</span>
+                </a>
+
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex space-x-8">
+                <a href="/index.html" class="nav-link text-white font-semibold">HOME</a>
+                <a href="/index.html" class="nav-link text-white font-semibold">ABOUT</a>
+                <a href="/pages/All teams/team-view.html" class="nav-link text-white font-semibold">TEAMS</a>
+                <a href="/pages/schedule display/schedule-view.html" class="nav-link text-white font-semibold">EVENTS</a>
+                <a href="/pages/Join Form/join-view.html" class="nav-link text-white font-semibold">JOIN US</a>
+                <a href="/index.html" class="nav-link text-white font-semibold">CONTACT</a>
+            </div>
+
+            <!-- Mobile Hamburger Button -->
+            <button id="hamburger" class="md:hidden text-white focus:outline-none">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+        </div>
+    </div>
+            <!-- Breadcrumbs -->
+        <div class="container mx-auto px-4 pb-3 hidden md:block">
+            <div class="text-sm text-gray-400">
+                <a href="/index.html" class="hover:text-arc-neon transition">Home</a> /
+                <a href="/pages/All teams/team-view.html" class="hover:text-arc-neon transition">Teams</a> / 
+                <a href="#" class="text-neon">Schedule<a>   
+            </div>
+        </div>
+    <!-- Mobile Menu -->
+    <div id="navMenu" class="nav-menu md:hidden bg-primary/95 backdrop-blur-md border-t border-secondary">
+        <div class="px-6 py-4 flex flex-col space-y-3">
+                <a href="/index.html" class="nav-link text-white font-semibold">HOME</a>
+                <a href="/index.html" class="nav-link text-white font-semibold">ABOUT</a>
+                <a href="/pages/All teams/team-view.html" class="nav-link text-white font-semibold">TEAMS</a>
+                <a href="/pages/schedule display/schedule-view.html" class="nav-link text-white font-semibold">EVENTS</a>
+                <a href="/pages/Join Form/join-view.html" class="nav-link text-white font-semibold">JOIN US</a>
+                <a href="/index.html" class="nav-link text-white font-semibold">CONTACT</a>
+        </div>
+    </div>
+</nav>
+
+</head>
+<body class="bg-grid items-center justify-center pt-20">
+    <div class="min-h-screen flex flex-col">
+        <!-- Main Content -->
+        <main class="flex-grow container mx-auto px-4 py-8">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-blackarc-text-light mb-2">Events & Schedule</h2>
+                <p class="text-blackarc-text-light/70">Stay updated with all Black Arc Esports competitive matches and streams</p>
+            </div>
+            
+            <!-- Filter Bar -->
+            <div class="bg-blackarc-light rounded-xl border border-blackarc-border mb-8 p-4 shadow-lg">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
+                    <div class="flex items-center space-x-2">
+                        <h3 class="font-medium text-blackarc-text-light">Filter by:</h3>
+                        <div class="scroll-container overflow-x-auto whitespace-nowrap pb-2">
+                            <div class="inline-flex space-x-2">
+                                <button onclick="filterEvents('all')" class="filter-btn active px-4 py-2 rounded-lg border border-blackarc-border hover:bg-blackarc-light/50 transition">
+                                    All Events
+                                </button>
+                                <button onclick="filterEvents('tournament')" class="filter-btn px-4 py-2 rounded-lg border border-blackarc-border hover:bg-blackarc-light/50 transition">
+                                    <i class="fas fa-trophy mr-2"></i> Tournaments
+                                </button>
+                                <button onclick="filterEvents('scrim')" class="filter-btn px-4 py-2 rounded-lg border border-blackarc-border hover:bg-blackarc-light/50 transition">
+                                    <i class="fas fa-chess mr-2"></i> Scrims
+                                </button>
+                                <button onclick="filterEvents('stream')" class="filter-btn px-4 py-2 rounded-lg border border-blackarc-border hover:bg-blackarc-light/50 transition">
+                                    <i class="fas fa-stream mr-2"></i> Streams
+                                </button>
+                                <button onclick="filterEvents('showcase')" class="filter-btn px-4 py-2 rounded-lg border border-blackarc-border hover:bg-blackarc-light/50 transition">
+                                    <i class="fas fa-star mr-2"></i> Showcases
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <button class="px-4 py-2 rounded-lg border border-blackarc-border hover:bg-blackarc-light/50 transition">
+                            <i class="far fa-calendar mr-2"></i> Calendar View
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Events Grid -->
+            <div id="events-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Event cards will be dynamically inserted here -->
+            </div>
+            
+            <!-- Loading More Indicator -->
+            <div id="loading-more" class="mt-8 text-center hidden">
+                <div class="inline-flex items-center space-x-2 text-blackarc-accent-light">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <span>Loading more events...</span>
+                </div>
+            </div>
+        </main>
+    </div>
+            <!-- Footer -->
+    <footer class="py-12 px-4 w-full sm:px-6 lg:px-8 bg-primary border-t border-secondary">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center mb-6 md:mb-0">
+                    <div class="gradient-border rounded-full p-1">
+                        <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
+                            <span class="font-mono font-bold text-xl gradient-text">BA</span>
+                        </div>
+                    </div>
+                    <span class="ml-3 text-xl font-bold gradient-text">BLACK ARC ESPORTS</span>
+                </div>
+                
+                <div class="flex space-x-6">
+                  <ul class="flex space-x-6">
+                        <li><a href="#" class="text-gray-400 hover:text-neon-pink transition"><i class="fab fa-twitter mr-2"></i> Twitter</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-neon-pink transition"><i class="fab fa-instagram mr-2"></i> Instagram</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-neon-pink transition"><i class="fab fa-twitch mr-2"></i> Twitch</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-neon-pink transition"><i class="fab fa-discord mr-2"></i> Discord</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-secondary mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-500 text-sm mb-4 md:mb-0">
+                    &copy; 2023 Black Arc Esports. All rights reserved.
+                </p>
+                
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-500 hover:text-white text-sm">PRIVACY POLICY</a>
+                    <a href="#" class="text-gray-500 hover:text-white text-sm">TERMS OF SERVICE</a>
+                    <a href="#" class="text-gray-500 hover:text-white text-sm">COOKIE POLICY</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+
+               // Mobile menu toggle
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('navMenu');
+        
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        // Sample event data
+        const events = [
+            {
+                id: 1,
+                title: "VALORANT Champions Tour",
+                type: "tournament",
+                game: "valorant",
+                date: "2023-06-15",
+                time: "18:00",
+                opponent: "Team Phoenix",
+                location: "Online",
+                description: "Group Stage - Best of 3",
+                featured: true
+            },
+            {
+                id: 2,
+                title: "Scrim Session",
+                type: "scrim",
+                game: "league",
+                date: "2023-06-16",
+                time: "15:00",
+                opponent: "Dragon Knights",
+                location: "Custom Lobby",
+                description: "Practice for upcoming tournament",
+                featured: false
+            },
+            {
+                id: 3,
+                title: "Community Stream",
+                type: "stream",
+                game: "overwatch",
+                date: "2023-06-17",
+                time: "20:00",
+                opponent: null,
+                location: "Twitch.tv/blackarc",
+                description: "Playing with viewers and Q&A",
+                featured: false
+            },
+            {
+                id: 4,
+                title: "CS:GO Showmatch",
+                type: "showcase",
+                game: "csgo",
+                date: "2023-06-18",
+                time: "19:30",
+                opponent: "Eclipse Gaming",
+                location: "Twitch.tv/blackarc",
+                description: "Charity event for gaming education",
+                featured: true
+            },
+            {
+                id: 5,
+                title: "League Championship",
+                type: "tournament",
+                game: "league",
+                date: "2023-06-20",
+                time: "17:00",
+                opponent: "Titan Esports",
+                location: "Online",
+                description: "Quarterfinals - Best of 5",
+                featured: true
+            },
+            {
+                id: 6,
+                title: "Scrim Session",
+                type: "scrim",
+                game: "valorant",
+                date: "2023-06-21",
+                time: "14:00",
+                opponent: "Nova Esports",
+                location: "Custom Lobby",
+                description: "Map practice - Bind & Fracture",
+                featured: false
+            },
+            {
+                id: 7,
+                title: "Dev Stream",
+                type: "stream",
+                game: "dota",
+                date: "2023-06-22",
+                time: "21:00",
+                opponent: null,
+                location: "Twitch.tv/blackarc",
+                description: "New patch analysis and meta discussion",
+                featured: false
+            },
+            {
+                id: 8,
+                title: "VALORANT Showdown",
+                type: "tournament",
+                game: "valorant",
+                date: "2023-06-24",
+                time: "16:00",
+                opponent: "Vanguard Esports",
+                location: "Online",
+                description: "Grand Finals - Best of 5",
+                featured: true
+            },
+            {
+                id: 9,
+                title: "Scrim Session",
+                type: "scrim",
+                game: "overwatch",
+                date: "2023-06-25",
+                time: "13:00",
+                opponent: "Omnic Warriors",
+                location: "Custom Lobby",
+                description: "New composition practice",
+                featured: false
+            }
+        ];
+
+        // Game icons mapping
+        const gameIcons = {
+            valorant: 'fas fa-bolt',
+            league: 'fab fa-leanpub',
+            overwatch: 'fas fa-crosshairs',
+            csgo: 'fas fa-gun',
+            dota: 'fas fa-swords'
+        };
+
+        // Type colors mapping
+        const typeColors = {
+            tournament: 'bg-gradient-to-r from-purple-600 to-blue-500',
+            scrim: 'bg-gradient-to-r from-green-600 to-teal-500',
+            stream: 'bg-gradient-to-r from-red-600 to-pink-500',
+            showcase: 'bg-gradient-to-r from-yellow-600 to-orange-500'
+        };
+
+        // Type icons mapping
+        const typeIcons = {
+            tournament: 'fas fa-trophy',
+            scrim: 'fas fa-chess',
+            stream: 'fas fa-stream',
+            showcase: 'fas fa-star'
+        };
+
+        // Initialize the page with all events
+        document.addEventListener('DOMContentLoaded', function() {
+            renderEvents(events);
+            
+            // Add click event to filter buttons
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        });
+
+        // Render events to the grid
+        function renderEvents(eventsToRender) {
+            const eventsGrid = document.getElementById('events-grid');
+            eventsGrid.innerHTML = '';
+            
+            eventsToRender.forEach(event => {
+                const eventCard = createEventCard(event);
+                eventsGrid.appendChild(eventCard);
+            });
+        }
+
+        // Create an event card element
+        function createEventCard(event) {
+            const card = document.createElement('div');
+            card.className = `event-card rounded-xl p-6 relative animate-fade-in ${event.featured ? 'border-blackarc-accent-light' : 'border-blackarc-border'}`;
+            if (event.featured) {
+                card.classList.add('shadow-glow');
+            }
+            
+            // Event type badge
+            const typeBadge = document.createElement('div');
+            typeBadge.className = `event-type-badge ${typeColors[event.type]} text-white`;
+            typeBadge.innerHTML = `<i class="${typeIcons[event.type]} mr-1"></i> ${event.type}`;
+            card.appendChild(typeBadge);
+            
+            // Game icon and title
+            const gameTitleDiv = document.createElement('div');
+            gameTitleDiv.className = 'flex items-center mb-4';
+            
+            const gameIcon = document.createElement('div');
+            gameIcon.className = 'game-icon mr-3';
+            gameIcon.innerHTML = `<i class="${gameIcons[event.game]} text-lg"></i>`;
+            gameTitleDiv.appendChild(gameIcon);
+            
+            const title = document.createElement('h3');
+            title.className = 'text-xl font-bold text-blackarc-text-light';
+            title.textContent = event.title;
+            gameTitleDiv.appendChild(title);
+            
+            card.appendChild(gameTitleDiv);
+            
+            // Date and time
+            const dateDiv = document.createElement('div');
+            dateDiv.className = 'flex items-center mb-3 text-blackarc-text-light/80';
+            dateDiv.innerHTML = `
+                <i class="far fa-calendar mr-2"></i>
+                <span>${formatDate(event.date)}</span>
+                <i class="far fa-clock ml-4 mr-2"></i>
+                <span>${event.time} UTC</span>
+            `;
+            card.appendChild(dateDiv);
+            
+            // Opponent or location
+            const detailDiv = document.createElement('div');
+            detailDiv.className = 'flex items-center mb-3 text-blackarc-text-light/80';
+            
+            if (event.opponent) {
+                detailDiv.innerHTML = `
+                    <i class="fas fa-users mr-2"></i>
+                    <span>vs. <span class="font-medium text-blackarc-text-light">${event.opponent}</span></span>
+                `;
+            } else {
+                detailDiv.innerHTML = `
+                    <i class="fas fa-map-marker-alt mr-2"></i>
+                    <span>${event.location}</span>
+                `;
+            }
+            card.appendChild(detailDiv);
+            
+            // Description
+            const descDiv = document.createElement('div');
+            descDiv.className = 'mb-4 text-sm text-blackarc-text-light/70';
+            descDiv.textContent = event.description;
+            card.appendChild(descDiv);
+            
+            // Action buttons
+            const actionDiv = document.createElement('div');
+            actionDiv.className = 'flex space-x-3';
+            
+            const calendarBtn = document.createElement('button');
+            calendarBtn.className = 'px-3 py-1 text-sm rounded-lg border border-blackarc-border hover:bg-blackarc-light/50 transition flex items-center';
+            calendarBtn.innerHTML = '<i class="far fa-calendar-plus mr-2"></i> Add to Calendar';
+            actionDiv.appendChild(calendarBtn);
+            
+            if (event.type === 'stream' || event.type === 'showcase') {
+                const watchBtn = document.createElement('a');
+                watchBtn.href = '#';
+                watchBtn.className = 'px-3 py-1 text-sm rounded-lg bg-blackarc-accent-light text-white hover:bg-blackarc-accent transition flex items-center';
+                watchBtn.innerHTML = '<i class="fas fa-external-link-alt mr-2"></i> Watch';
+                actionDiv.appendChild(watchBtn);
+            } else if (event.opponent) {
+                const statsBtn = document.createElement('a');
+                statsBtn.href = '#';
+                statsBtn.className = 'px-3 py-1 text-sm rounded-lg bg-blackarc-accent-light text-white hover:bg-blackarc-accent transition flex items-center';
+                statsBtn.innerHTML = '<i class="fas fa-chart-line mr-2"></i> Stats';
+                actionDiv.appendChild(statsBtn);
+            }
+            
+            card.appendChild(actionDiv);
+            
+            return card;
+        }
+
+        // Filter events by type
+        function filterEvents(type) {
+            if (type === 'all') {
+                renderEvents(events);
+            } else {
+                const filteredEvents = events.filter(event => event.type === type);
+                renderEvents(filteredEvents);
+            }
+        }
+
+        // Format date to be more readable
+        function formatDate(dateString) {
+            const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
+            return new Date(dateString).toLocaleDateString('en-US', options);
+        }
+    </script>
+<p style="border-radius: 8px; text-align: center; font-size: 12px; color: #fff; margin-top: 16px;position: fixed; left: 8px; bottom: 8px; z-index: 10; background: rgba(0, 0, 0, 0.8); padding: 4px 8px;">Made with <img src="https://enzostvs-deepsite.hf.space/logo.svg" alt="DeepSite Logo" style="width: 16px; height: 16px; vertical-align: middle;display:inline-block;margin-right:3px;filter:brightness(0) invert(1);"><a href="https://enzostvs-deepsite.hf.space" style="color: #fff;text-decoration: underline;" target="_blank" >DeepSite</a> - 🧬 <a href="https://enzostvs-deepsite.hf.space?remix=pipo249/schedule" style="color: #fff;text-decoration: underline;" target="_blank" >Remix</a></p></body>
+</html>

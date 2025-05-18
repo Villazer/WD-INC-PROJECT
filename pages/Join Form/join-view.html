@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join Our Team | Black Arc Esports</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0f0f13',
+                        secondary: '#1a1a24',
+                        accent: '#8a2be2',
+                        neon: '#ff00ff',
+                        highlight: '#ff3860',
+                    },
+                    fontFamily: {
+                        'sans': ['Rajdhani', 'sans-serif'],
+                        'mono': ['Major Mono Display', 'monospace'],
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        glow: {
+                            'from': { 'text-shadow': '0 0 5px #fff, 0 0 10px #fff, 0 0 15px #ff00ff, 0 0 20px #ff00ff' },
+                            'to': { 'text-shadow': '0 0 10px #fff, 0 0 20px #fff, 0 0 30px #ff00ff, 0 0 40px #ff00ff' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Major+Mono+Display&display=swap');
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background-color: #0a0a0a;
+            color: white;
+            min-height: 100vh;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="40" stroke="%231a0529" stroke-width="0.5" fill="none"/></svg>');
+            background-size: 100px 100px;
+        }
+        
+        .glow-text {
+            text-shadow: 0 0 10px rgba(255, 0, 255, 0.7);
+        }
+        
+        .glow-text-blue {
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.7);
+        }
+        
+        .input-glow:focus {
+            box-shadow: 0 0 15px rgba(255, 0, 255, 0.7);
+            border-color: rgba(255, 0, 255, 0.5);
+        }
+        
+        .toggle-option {
+            transition: all 0.3s ease;
+        }
+        
+        .toggle-option.active {
+            background: linear-gradient(45deg, rgba(255,0,255,0.2), rgba(0,240,255,0.2));
+            box-shadow: 0 0 15px rgba(255, 0, 255, 0.5);
+            border-color: rgba(255, 0, 255, 0.7);
+        }
+        
+        .submit-btn {
+            background: linear-gradient(45deg, rgba(255,0,255,0.7), rgba(0,240,255,0.7));
+            transition: all 0.3s ease;
+        }
+        
+        .submit-btn:hover {
+            background: linear-gradient(45deg, rgba(255,0,255,0.9), rgba(0,240,255,0.9));
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.7);
+        }
+        
+        .role-form {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .role-form.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .floating-label {
+            position: absolute;
+            pointer-events: none;
+            left: 12px;
+            top: 11px;
+            transition: 0.2s ease all;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 14px;
+        }
+        
+        .gradient-border {
+    position: relative;
+}
+.gradient-border::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    border-radius: inherit;
+    padding: 2px;
+    background: linear-gradient(135deg, #8a2be2, #ff00ff);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+}
+
+        .gradient-text {
+            background: linear-gradient(90deg, #8a2be2, #ff00ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        input:focus ~ .floating-label,
+        input:not(:placeholder-shown) ~ .floating-label,
+        textarea:focus ~ .floating-label,
+        textarea:not(:placeholder-shown) ~ .floating-label {
+            top: -8px;
+            left: 10px;
+            font-size: 12px;
+            color: #00f0ff;
+            background-color: #1a0529;
+            padding: 0 5px;
+        }
+        
+        .input-container {
+            position: relative;
+        }
+        
+        .motivation-icon {
+            transition: all 0.3s ease;
+        }
+        
+        .motivation-icon:hover {
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 8px rgba(255, 0, 255, 0.7));
+        }
+        
+        .hamburger {
+            transition: all 0.3s ease;
+        }
+        
+        .hamburger.active {
+            transform: rotate(90deg);
+        }
+        
+        .nav-menu {
+            transition: all 0.3s ease;
+            max-height: 0;
+            overflow: hidden;
+        }
+        
+        .nav-menu.active {
+            max-height: 500px;
+        }
+                .bg-grid {
+            background-image: 
+                linear-gradient(rgba(138, 43, 226, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(138, 43, 226, 0.1) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+    </style>
+</head>
+<body class="bg-deep-black">
+<!-- Navigation -->
+<nav class="fixed w-full z-50 bg-primary/90 backdrop-blur-md border-b border-secondary">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16 items-center">
+            <!-- Logo -->
+                <a href="/index.html" class="flex-shrink-0 flex items-center">
+                    <div class="gradient-border rounded-full p-1">
+                        <div class="w-10 h-10 rounded-full bg-violet-500 flex items-center justify-center">
+                            <img src="/images/LogoNavBarAndroid.png" alt="LogoPic" class="w-8 h-8 object-contain filter grayscale hover:grayscale-0">
+                        </div>
+                    </div>
+                    <span class="ml-3 text-xl font-bold gradient-text hidden sm:block">BLACK ARC</span>
+                </a>
+
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex space-x-8">
+                <a href="/index.html" class="nav-link text-white font-semibold">HOME</a>
+                <a href="/index.html" class="nav-link text-white font-semibold">ABOUT</a>
+                <a href="/pages/All teams/team-view.html" class="nav-link text-white font-semibold">TEAMS</a>
+                <a href="/pages/schedule display/schedule-view.html" class="nav-link text-white font-semibold">EVENTS</a>
+                <a href="/pages/Join Form/join-view.html" class="nav-link text-white font-semibold">JOIN US</a>
+                <a href="/index.html" class="nav-link text-white font-semibold">CONTACT</a>
+            </div>
+
+            <!-- Mobile Hamburger Button -->
+            <button id="hamburger" class="md:hidden text-white focus:outline-none">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="navMenu" class="nav-menu md:hidden bg-primary/95 backdrop-blur-md border-t border-secondary">
+        <div class="px-6 py-4 flex flex-col space-y-3">
+                <a href="/index.html" class="nav-link text-white font-semibold">HOME</a>
+                <a href="/index.html" class="nav-link text-white font-semibold">ABOUT</a>
+                <a href="/pages/All teams/team-view.html" class="nav-link text-white font-semibold">TEAMS</a>
+                <a href="/pages/schedule display/schedule-view.html" class="nav-link text-white font-semibold">EVENTS</a>
+                <a href="/pages/Join Form/join-view.html" class="nav-link text-white font-semibold">JOIN US</a>
+                <a href="/index.html" class="nav-link text-white font-semibold">CONTACT</a>
+        </div>
+    </div>
+</nav>
+
+    </header>
+
+    <!-- Main Content -->
+    <main class="bg-grid container mx-auto px-4 py-8">
+
+        
+        <!-- Page Title -->
+         <div class="flex items-center text-sm text-gray-400 mb-2 pt-20">
+                        <a href="/index.html" class="hover:text-white">Home</a>
+                        <span class="mx-2">/</span>
+                        <span class="text-neon">Join</span>
+                    </div>
+        <div class="mb-12 text-center pt-24">
+            <h1 class="text-4xl md:text-6xl font-bold mb-4 glow-text">JOIN OUR TEAM</h1>
+            <p class="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">
+                Become part of the Black Arc family and compete at the highest level of esports excellence.
+            </p>
+        </div>
+        
+        <!-- Role Selection Toggle -->
+        <div class="max-w-2xl mx-auto mb-12">
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <button data-role="player" class="toggle-option active flex-1 py-3 px-6 rounded-full border border-neon-pink text-white font-medium">
+                    <i class="fas fa-gamepad mr-2"></i> Player
+                </button>
+                <button data-role="creator" class="toggle-option flex-1 py-3 px-6 rounded-full border border-gray-700 text-white font-medium">
+                    <i class="fas fa-video mr-2"></i> Content Creator
+                </button>
+                <button data-role="staff" class="toggle-option flex-1 py-3 px-6 rounded-full border border-gray-700 text-white font-medium">
+                    <i class="fas fa-users mr-2"></i> Staff Member
+                </button>
+            </div>
+        </div>
+        
+        <!-- Player Application Form -->
+        <form id="playerForm" class="role-form active max-w-2xl mx-auto bg-dark-purple bg-opacity-50 backdrop-blur-sm rounded-xl p-6 md:p-8 border border-gray-800 shadow-lg">
+            <h2 class="text-2xl font-bold mb-6 glow-text-blue">Player Application</h2>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Name -->
+                <div class="input-container">
+                    <input type="text" id="playerName" class="w-full bg-gray-900 bg-opacity-50 border border-gray-700 rounded-lg py-3 px-4 text-white input-glow focus:outline-none focus:border-neon-pink transition placeholder-transparent" placeholder=" ">
+                    <label for="playerName" class="floating-label">Full Name</label>
+                </div>
+                
+                <!-- Age -->
+                <div class="input-container">
+                    <input type="number" id="playerAge" class="w-full bg-gray-900 bg-opacity-50 border border-gray-700 rounded-lg py-3 px-4 text-white input-glow focus:outline-none focus:border-neon-pink transition placeholder-transparent" placeholder=" " min="13" max="99">
+                    <label for="playerAge" class="floating-label">Age</label>
+                </div>
+                
+                <!-- Email -->
+                <div class="input-container md:col-span-2">
+                    <input type="email" id="playerEmail" class="w-full bg-gray-900 bg-opacity-50 border border-gray-700 rounded-lg py-3 px-4 text-white input-glow focus:outline-none focus:border-neon-pink transition placeholder-transparent" placeholder=" ">
+                    <label for="playerEmail" class="floating-label">Email Address</label>
+                </div>
+                
+                <!-- Game -->
+                <div class="input-container md:col-span-2">
+                    <select id="playerGame" class="w-full bg-gray-900 bg-opacity-50 border border-gray-700 rounded-lg py-3 px-4 text-white input-glow focus:outline-none focus:border-neon-pink transition appearance-none">
+                        <option value="" disabled selected>Select your game</option>
+                        <option value="valorant">Valorant</option>
+                        <option value="csgo">CS:GO</option>
+                        <option value="lol">League of Legends</option>
+                        <option value="dota2">Dota 2</option>
+                        <option value="overwatch">Overwatch 2</option>
+                        <option value="apex">Apex Legends</option>
+                    </select>
+                </div>
+                
+                <!-- Role -->
+                <div class="input-container md:col-span-2">
+                    <select id="playerRole" class="w-full bg-gray-900 bg-opacity-50 border border-gray-700 rounded-lg py-3 px-4 text-white input-glow focus:outline-none focus:border-neon-pink transition appearance-none">
+                        <option value="" disabled selected>Select your preferred role</option>
+                        <option value="duelist">Duelist (Entry Fragger)</option>
+                        <option value="controller">Controller (Smokes)</option>
+                        <option value="sentinel">Sentinel (Defense)</option>
+                        <option value="initiator">Initiator (Info Gatherer)</option>
+                        <option value="flex">Flex Player</option>
+                    </select>
+                </div>
+                
+                <!-- Social Media -->
+                <div class="input-container md:col-span-2">
+                    <input type="text" id="playerSocial" class="w-full bg-gray-900 bg-opacity-50 border border-gray-700 rounded-lg py-3 px-4 text-white input-glow focus:outline-none focus:border-neon-pink transition placeholder-transparent" placeholder=" ">
+                    <label for="playerSocial" class="floating-label">Social Media / Twitch / YouTube Links</label>
+                </div>
+                
+                <!-- Bio -->
+                <div class="input-container md:col-span-2">
+                    <textarea id="playerBio" rows="4" class="w-full bg-gray-900 bg-opacity-50 border border-gray-700 rounded-lg py-3 px-4 text-white input-glow focus:outline-none focus:border-neon-pink transition placeholder-transparent" placeholder=" "></textarea>
+                    <label for="playerBio" class="floating-label">Tell us about your experience and why you want to join</label>
+                </div>
+            </div>
+            
+            <div class="mt-8">
+                <button type="submit" class="submit-btn w-full py-3 px-6 rounded-lg text-white font-bold text-lg glow-text">
+                    SUBMIT APPLICATION
+                </button>
+            </div>
+        </form>
+        
+        <!-- Content Creator Application Form -->
+        <form id="creatorForm" class="role-form max-w-2xl mx-auto bg-dark-purple bg-opacity-50 backdrop-blur-sm rounded-xl p-6 md:p-8 border border-gray-800 shadow-lg">
+            <h2 class="text-2xl font-bold mb-6 glow-text-blue">Content Creator Application</h2>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Name -->
+                <div class="input-container">
+                    <input type="text" id="creatorName" class="w-full bg-gray-900 bg-opacity-50 border border-gray-700 rounded-lg py-3 px-4 text-white input-glow focus:outline-none focus:border-neon-pink transition placeholder-transparent" placeholder=" ">
+                    <label for="creatorName" class="floating-label">Full Name</label>
+                </div>
+                
+                <!-- Age -->
+                <div class="input-container">
+                    <input type="number" id="creatorAge" class="w-full bg-gray-900 bg-opacity-50 border border-gray-700 rounded-lg py-3 px-4 text-white input-glow focus:outline-none focus:border-neon-pink transition placeholder-transparent" placeholder=" " min="13" max="99">
+                    <label for="creatorAge" class="floating-label">Age</label>
+                </div>
+                
+                <!-- Email -->
+                <div class="input-container md:col-span-2">
+                    <input type="email" id="creatorEmail" class="w-full bg-gray-900 bg-opacity-50 border border-gray-700 rounded-lg py-3 px-4 text-white input-glow focus:outline-none focus:border-neon-pink transition placeholder-transparent" placeholder=" ">
+                    <label for="creatorEmail" class="floating-label">Email Address</label>
+                </div>
+                
+                <!-- Content Type -->
+                <div class="input-container md:col-span-2">
+                    <select id="creatorType" class="w-full bg-gray-900 bg-opacity-50 border border-gray-700 rounded-lg py-3 px-4 text-white input-glow focus:outline-none focus:border-neon-pink transition appearance-none">
+                        <option value="" disabled selected>Select your content type</option>
+                        <option value="streaming">Live Streaming</option>
+                        <option value="youtube">YouTube Videos</option>
+                        <option value="tiktok">Short Form Content</option>
+                        <option value="graphics">Graphic Design</option>
+                        <option value="writing">Written Content</option>
+                    </select>
+                </div>
+                
+                <!-- Portfolio -->
+                <div class="input-container md:col-span-2">
+                    <input type="text" id="creatorPortfolio" class="w-full bg-gray-900 bg-opacity-50 border border-gray-700 rounded-lg py-3 px-4 text-white input-glow focus:outline-none focus:border-neon-pink transition placeholder-transparent" placeholder=" ">
+                    <label for="creatorPortfolio" class="floating-label">Portfolio / Channel Links</label>
+                </div>
+                
+                <!-- Bio -->
+                <div class="input-container md:col-span-2">
+                    <textarea id="creatorBio" rows="4" class="w-full bg-gray-900 bg-opacity-50 border border-gray-700 rounded-lg py-3 px-4 text-white input-glow focus:outline-none focus:border-neon-pink transition placeholder-transparent" placeholder=" "></textarea>
+                    <label for="creatorBio" class="floating-label">Tell us about your content and why you want to join</label>
+                </div>
+            </div>
+            
+            <div class="mt-8">
+                <button type="submit" class="submit-btn w-full py-3 px-6 rounded-lg text-white font-bold text-lg glow-text">
+                    SUBMIT APPLICATION
+                </button>
+            </div>
+        </form>
+        
+        <!-- Staff Application Form -->
+        <form id="staffForm" class="role-form max-w-2xl mx-auto bg-dark-purple bg-opacity-50 backdrop-blur-sm rounded-xl p-6 md:p-8 border border-gray-800 shadow-lg">
+            <h2 class="text-2xl font-bold mb-6 glow-text-blue">Staff Application</h2>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Name -->
+                <div class="input-container">
+                    <input type="text" id="staffName" class="w-full bg-gray-900 bg-opacity-50 border border-gray-700 rounded-lg py-3 px-4 text-white input-glow focus:outline-none focus:border-neon-pink transition placeholder-transparent" placeholder=" ">
+                    <label for="staffName" class="floating-label">Full Name</label>
+                </div>
+                
+                <!-- Age -->
+                <div class="input-container">
+                    <input type="number" id="staffAge" class="w-full bg-gray-900 bg-opacity-50 border border-gray-700 rounded-lg py-3 px-4 text-white input-glow focus:outline-none focus:border-neon-pink transition placeholder-transparent" placeholder=" " min="18" max="99">
+                    <label for="staffAge" class="floating-label">Age</label>
+                </div>
+                
+                <!-- Email -->
+                <div class="input-container md:col-span-2">
+                    <input type="email" id="staffEmail" class="w-full bg-gray-900 bg-opacity-50 border border-gray-700 rounded-lg py-3 px-4 text-white input-glow focus:outline-none focus:border-neon-pink transition placeholder-transparent" placeholder=" ">
+                    <label for="staffEmail" class="floating-label">Email Address</label>
+                </div>
+                
+                <!-- Role -->
+                <div class="input-container md:col-span-2">
+                    <select id="staffRole" class="w-full bg-gray-900 bg-opacity-50 border border-gray-700 rounded-lg py-3 px-4 text-white input-glow focus:outline-none focus:border-neon-pink transition appearance-none">
+                        <option value="" disabled selected>Select desired staff role</option>
+                        <option value="coach">Coach</option>
+                        <option value="analyst">Analyst</option>
+                        <option value="manager">Team Manager</option>
+                        <option value="social">Social Media Manager</option>
+                        <option value="events">Events Coordinator</option>
+                    </select>
+                </div>
+                
+                <!-- Experience -->
+                <div class="input-container md:col-span-2">
+                    <input type="text" id="staffExperience" class="w-full bg-gray-900 bg-opacity-50 border border-gray-700 rounded-lg py-3 px-4 text-white input-glow focus:outline-none focus:border-neon-pink transition placeholder-transparent" placeholder=" ">
+                    <label for="staffExperience" class="floating-label">Previous Experience</label>
+                </div>
+                
+                <!-- Bio -->
+                <div class="input-container md:col-span-2">
+                    <textarea id="staffBio" rows="4" class="w-full bg-gray-900 bg-opacity-50 border border-gray-700 rounded-lg py-3 px-4 text-white input-glow focus:outline-none focus:border-neon-pink transition placeholder-transparent" placeholder=" "></textarea>
+                    <label for="staffBio" class="floating-label">Tell us about your qualifications and why you want to join</label>
+                </div>
+            </div>
+            
+            <div class="mt-8">
+                <button type="submit" class="submit-btn w-full py-3 px-6 rounded-lg text-white font-bold text-lg glow-text">
+                    SUBMIT APPLICATION
+                </button>
+            </div>
+        </form>
+        
+        <!-- Motivation Section -->
+        <div class="max-w-4xl mx-auto mt-20 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-8 glow-text">LEVEL UP WITH BLACK ARC ESPORTS</h2>
+            
+            <div class="grid md:grid-cols-3 gap-8 mb-12">
+                <div class="motivation-icon p-6 bg-dark-purple bg-opacity-50 rounded-xl border border-gray-800 hover:border-neon-pink transition">
+                    <i class="fas fa-trophy text-4xl mb-4 text-electric-blue"></i>
+                    <h3 class="text-xl font-bold mb-2">Competitive Excellence</h3>
+                    <p class="text-gray-300">Join a team dedicated to winning at the highest levels of esports competition.</p>
+                </div>
+                
+                <div class="motivation-icon p-6 bg-dark-purple bg-opacity-50 rounded-xl border border-gray-800 hover:border-neon-pink transition">
+                    <i class="fas fa-users text-4xl mb-4 text-electric-blue"></i>
+                    <h3 class="text-xl font-bold mb-2">Supportive Community</h3>
+                    <p class="text-gray-300">Become part of a passionate community that supports and elevates each other.</p>
+                </div>
+                
+                <div class="motivation-icon p-6 bg-dark-purple bg-opacity-50 rounded-xl border border-gray-800 hover:border-neon-pink transition">
+                    <i class="fas fa-chart-line text-4xl mb-4 text-electric-blue"></i>
+                    <h3 class="text-xl font-bold mb-2">Career Growth</h3>
+                    <p class="text-gray-300">Access resources and opportunities to grow your skills and esports career.</p>
+                </div>
+            </div>
+            
+            <p class="text-lg text-gray-300 max-w-2xl mx-auto mb-8">
+                We're looking for talented, dedicated individuals who share our passion for competitive gaming and community building.
+            </p>
+            
+            <button class="submit-btn py-3 px-8 rounded-lg text-white font-bold text-lg glow-text inline-flex items-center">
+                APPLY NOW <i class="fas fa-arrow-right ml-2"></i>
+            </button> 
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-12 px-4 sm:px-6 lg:px-8 bg-primary border-t border-secondary">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center mb-6 md:mb-0">
+                    <div class="gradient-border rounded-full p-1">
+                        <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
+                            <span class="font-mono font-bold text-xl gradient-text">BA</span>
+                        </div>
+                    </div>
+                    <span class="ml-3 text-xl font-bold gradient-text">BLACK ARC ESPORTS</span>
+                </div>
+                
+                <div class="flex space-x-6">
+                  <ul class="flex space-x-6">
+                        <li><a href="#" class="text-gray-400 "><i class="fab fa-twitter mr-2"></i> Twitter</a></li>
+                        <li><a href="#" class="text-gray-400 "><i class="fab fa-instagram mr-2"></i> Instagram</a></li>
+                        <li><a href="#" class="text-gray-400 "><i class="fab fa-twitch mr-2"></i> Twitch</a></li>
+                        <li><a href="#" class="text-gray-400 "><i class="fab fa-discord mr-2"></i> Discord</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-secondary mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-500 text-sm mb-4 md:mb-0">
+                    &copy; 2023 Black Arc Esports. All rights reserved.
+                </p>
+                
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-500 hover:text-white text-sm">PRIVACY POLICY</a>
+                    <a href="#" class="text-gray-500 hover:text-white text-sm">TERMS OF SERVICE</a>
+                    <a href="#" class="text-gray-500 hover:text-white text-sm">COOKIE POLICY</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('navMenu');
+        
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+        
+        // Role selection toggle
+        const roleButtons = document.querySelectorAll('.toggle-option');
+        const forms = {
+            player: document.getElementById('playerForm'),
+            creator: document.getElementById('creatorForm'),
+            staff: document.getElementById('staffForm')
+        };
+        
+        roleButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons
+                roleButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                    btn.classList.add('border-gray-700');
+                    btn.classList.remove('border-neon-pink');
+                });
+                
+                // Add active class to clicked button
+                button.classList.add('active');
+                button.classList.remove('border-gray-700');
+                button.classList.add('border-neon-pink');
+                
+                // Hide all forms
+                Object.values(forms).forEach(form => {
+                    form.classList.remove('active');
+                });
+                
+                // Show selected form
+                const role = button.getAttribute('data-role');
+                forms[role].classList.add('active');
+            });
+        });
+        
+        // Scroll animation for motivation section
+        window.addEventListener('scroll', () => {
+            const motivationSection = document.querySelector('.motivation-icon');
+            const scrollPosition = window.scrollY;
+            const windowHeight = window.innerHeight;
+            const sectionPosition = motivationSection.getBoundingClientRect().top;
+            
+            if (sectionPosition < windowHeight * 0.75) {
+                motivationSection.style.opacity = '1';
+                motivationSection.style.transform = 'translateY(0)';
+            }
+        });
+        
+        // Form validation would go here
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                // In a real implementation, you would validate and submit the form here
+                alert('Application submitted successfully! We will review your information and get back to you soon.');
+            });
+        });
+    </script>
+</body>
+</html>

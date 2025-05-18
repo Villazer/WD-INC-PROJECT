@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Black Arc Esports - Valorant Squad</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0f0f13',
+                        secondary: '#1a1a24',
+                        accent: '#8a2be2',
+                        neon: '#ff00ff',
+                        highlight: '#ff3860',
+                        'arc-dark': '#0a0a0a',
+                        'arc-purple': '#6d28d9',
+                        'arc-pink': '#ec4899',
+                        'arc-blue': '#3b82f6',
+                        'arc-neon': '#00f0ff',
+                    },
+                    fontFamily: {
+                        'sans': ['Rajdhani', 'sans-serif'],
+                        'mono': ['Major Mono Display', 'monospace'],
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        glow: {
+                            'from': { 'text-shadow': '0 0 5px #fff, 0 0 10px #fff, 0 0 15px #ff00ff, 0 0 20px #ff00ff' },
+                            'to': { 'text-shadow': '0 0 10px #fff, 0 0 20px #fff, 0 0 30px #ff00ff, 0 0 40px #ff00ff' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Major+Mono+Display&display=swap');
+        
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background-color: #0f0f13;
+            color: white;
+            overflow-x: hidden;
+        }
+        
+        .bg-grid {
+            background-image: 
+                linear-gradient(rgba(138, 43, 226, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(138, 43, 226, 0.1) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+        
+        .gradient-text {
+        background: linear-gradient(90deg, #8a2be2, #ff00ff);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, rgba(109, 40, 217, 0.2), rgba(236, 72, 153, 0.2));
+        }
+        
+        .header-bg {
+            background: linear-gradient(180deg, rgba(10, 10, 10, 0.9), rgba(10, 10, 10, 0.7));
+            backdrop-filter: blur(10px);
+        }
+        
+        .hero-overlay {
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.8));
+        }
+        
+        .neon-border {
+            position: relative;
+        }
+        
+        .neon-border::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #3b82f6, #00f0ff);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+        
+        .neon-border:hover::after {
+            transform: scaleX(1);
+        }
+        
+        .player-card {
+            transition: all 0.3s ease;
+            border: 1px solid rgba(59, 130, 246, 0.1);
+        }
+        
+        .player-card:hover {
+            transform: translateY(-4px);
+            border: 1px solid rgba(59, 130, 246, 0.5);
+            box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.1), 0 4px 6px -2px rgba(59, 130, 246, 0.05);
+        }
+        
+        .role-badge {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .role-badge::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: translateX(-100%);
+            animation: shine 1.5s infinite;
+        }
+        
+        @keyframes shine {
+            100% {
+                transform: translateX(100%);
+            }
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -20px;
+            top: 0;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom, #3b82f6, #ec4899);
+        }
+        
+        .timeline-item:last-child::before {
+            height: 50%;
+        }
+        
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .accordion.active .accordion-content {
+            max-height: 500px;
+        }
+        
+        .sponsor-logo {
+            filter: grayscale(100%) brightness(0.5);
+            transition: all 0.3s ease;
+        }
+        
+        .sponsor-logo:hover {
+            filter: grayscale(0%) brightness(1);
+        }
+        
+        .hamburger {
+            transition: all 0.3s ease;
+        }
+        
+        .hamburger.active {
+            transform: rotate(90deg);
+        }
+        
+        .nav-menu {
+            transition: all 0.3s ease;
+            max-height: 0;
+            overflow: hidden;
+        }
+        
+        .nav-menu.active {
+            max-height: 500px;
+        }
+        
+    </style>
+</head>
+<body class="bg-grid min-h-screen">
+<nav class="fixed w-full z-50 bg-primary/90 backdrop-blur-md border-b border-secondary">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16 items-center">
+            <!-- Logo -->
+                <a href="/index.html" class="flex-shrink-0 flex items-center">
+                    <div class="gradient-border rounded-full p-1">
+                        <div class="w-10 h-10 rounded-full bg-violet-500 flex items-center justify-center">
+                            <img src="/images/LogoNavBarAndroid.png" alt="LogoPic" class="w-8 h-8 object-contain filter grayscale hover:grayscale-0">
+                        </div>
+                    </div>
+                    <span class="ml-3 text-xl font-bold gradient-text hidden sm:block">BLACK ARC</span>
+                </a>
+
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex space-x-8">
+                <a href="/index.html" class="nav-link text-white font-semibold">HOME</a>
+                <a href="#about" class="nav-link text-white font-semibold">ABOUT</a>
+                <a href="/pages/All teams/team-view.html" class="nav-link text-white font-semibold">TEAMS</a>
+                <a href="/pages/schedule display/schedule-view.html" class="nav-link text-white font-semibold">EVENTS</a>
+                <a href="/pages/Join Form/join-view.html" class="nav-link text-white font-semibold">JOIN US</a>
+                <a href="/index.html" class="nav-link text-white font-semibold">CONTACT</a>
+            </div>
+
+            <!-- Mobile Hamburger Button -->
+            <button id="hamburger" class="md:hidden text-white focus:outline-none">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+        </div>
+    </div>
+            <!-- Breadcrumbs -->
+        <div class="container mx-auto px-4 pb-3 hidden md:block">
+            <div class="text-sm text-gray-400">
+                <a href="/index.html" class="hover:text-arc-neon transition">Home</a> /
+                <a href="/pages/All teams/team-view.html" class="hover:text-arc-neon transition">Teams</a> / 
+                <a href="#" class="text-neon">Members</a>
+ 
+            </div>
+        </div>
+    <!-- Mobile Menu -->
+    <div id="navMenu" class="nav-menu md:hidden bg-primary/95 backdrop-blur-md border-t border-secondary">
+        <div class="px-6 py-4 flex flex-col space-y-3">
+                <a href="/index.html" class="nav-link text-white font-semibold">HOME</a>
+                <a href="/index.html" class="nav-link text-white font-semibold">ABOUT</a>
+                <a href="/pages/All teams/team-view.html" class="nav-link text-white font-semibold">TEAMS</a>
+                <a href="/pages/schedule display/schedule-view.html" class="nav-link text-white font-semibold">EVENTS</a>
+                <a href="/pages/Join Form/join-view.html" class="nav-link text-white font-semibold">JOIN US</a>
+                <a href="/index.html" class="nav-link text-white font-semibold">CONTACT</a>
+        </div>
+    </div>
+</nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-24 md:pt-32">
+        <div class="w-full h-64 md:h-96 bg-gradient-to-r from-arc-purple to-arc-pink relative overflow-hidden">
+            <!-- Hero background image -->
+            <div class="absolute inset-0 bg- bg-cover bg-center">
+                <img src="/images/Valo Banner.webp" alt="">
+            </div>
+            <div class="hero-overlay absolute inset-0"></div>
+            
+            <!-- Hero content -->
+            <div class="container mx-auto px-4 relative z-10 h-full flex flex-col justify-center">
+                <div class="max-w-2xl">
+                    <h1 class="text-4xl md:text-6xl font-bold gradient-text mb-2">VALORANT SQUAD</h1>
+                    <p class="text-xl md:text-2xl text-white mb-6">Dominating the competitive scene with precision and strategy</p>
+                    <div class="w-32 h-1 bg-gradient-to-r from-arc-blue to-arc-neon rounded-full animate-pulse-slow"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Stats Bar -->
+    <section class="gradient-bg py-4">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                <!-- Rank -->
+                <div class="flex items-center">
+                    <div class="bg-black bg-opacity-50 rounded-full px-4 py-1 border border-arc-blue flex items-center animate-glow">
+                        <span class="text-arc-neon font-bold mr-2">#2</span>
+                        <span class="text-white">North America</span>
+                    </div>
+                </div>
+                
+                <!-- Game Genre -->
+                <div class="flex items-center">
+                    <i class="fas fa-crosshairs text-arc-neon mr-2"></i>
+                    <span class="text-white">Tactical FPS</span>
+                </div>
+                
+                <!-- Record -->
+                <div class="flex items-center">
+                    <span class="text-white mr-2">Record:</span>
+                    <span class="text-green-400 font-bold">24-5</span>
+                    <span class="text-gray-400 mx-1">|</span>
+                    <span class="text-arc-neon flex items-center">
+                        <i class="fas fa-fire mr-1"></i>
+                        8W Streak
+                    </span>
+                </div>
+                
+                <!-- Sponsors -->
+                <div class="flex items-center space-x-4">
+                    <img src="/images/hyperx.png" alt="HyperX" class="h-6 sponsor-logo">
+                    <img src="/images/logitech.png" alt="Logitech" class="h-6 sponsor-logo">
+                    <img src="/images/redbull.png" alt="Red Bull" class="h-10 sponsor-logo">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-12">
+        <!-- Roster Section -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold gradient-text mb-8 neon-border inline-block">ROSTER</h2>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Player 1 -->
+                <div class="player-card bg-black bg-opacity-30 rounded-lg p-6 transition">
+                    <div class="flex flex-col items-center text-center">
+                        <div class="w-24 h-24 rounded-full bg-gradient-to-br from-arc-purple to-arc-pink mb-4 overflow-hidden">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Player" class="w-full h-full object-cover">
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-1">JettMain69</h3>
+                        <div class="role-badge bg-arc-purple bg-opacity-20 text-arc-neon px-3 py-1 rounded-full text-sm mb-3">
+                            Duelist
+                        </div>
+                        <p class="text-gray-300 text-sm mb-4">Former CS:GO pro turned Valorant specialist. Known for aggressive plays and clutch moments.</p>
+                        <div class="flex space-x-3">
+                            <a href="#" class="text-gray-400 hover:text-arc-neon transition"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="text-gray-400 hover:text-arc-neon transition"><i class="fab fa-twitch"></i></a>
+                            <a href="#" class="text-gray-400 hover:text-arc-neon transition"><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Player 2 -->
+                <div class="player-card bg-black bg-opacity-30 rounded-lg p-6 transition">
+                    <div class="flex flex-col items-center text-center">
+                        <div class="w-24 h-24 rounded-full bg-gradient-to-br from-arc-purple to-arc-pink mb-4 overflow-hidden">
+                            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Player" class="w-full h-full object-cover">
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-1">SovaQueen</h3>
+                        <div class="role-badge bg-arc-blue bg-opacity-20 text-arc-neon px-3 py-1 rounded-full text-sm mb-3">
+                            Initiator
+                        </div>
+                        <p class="text-gray-300 text-sm mb-4">Recon specialist with unmatched game sense. Leads the team with precise callouts.</p>
+                        <div class="flex space-x-3">
+                            <a href="#" class="text-gray-400 hover:text-arc-neon transition"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="text-gray-400 hover:text-arc-neon transition"><i class="fab fa-youtube"></i></a>
+                            <a href="#" class="text-gray-400 hover:text-arc-neon transition"><i class="fab fa-tiktok"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Player 3 -->
+                <div class="player-card bg-black bg-opacity-30 rounded-lg p-6 transition">
+                    <div class="flex flex-col items-center text-center">
+                        <div class="w-24 h-24 rounded-full bg-gradient-to-br from-arc-purple to-arc-pink mb-4 overflow-hidden">
+                            <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Player" class="w-full h-full object-cover">
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-1">SmokeGod</h3>
+                        <div class="role-badge bg-gray-600 bg-opacity-20 text-arc-neon px-3 py-1 rounded-full text-sm mb-3">
+                            Controller
+                        </div>
+                        <p class="text-gray-300 text-sm mb-4">Tactical mastermind controlling the battlefield. Former Overwatch pro with exceptional game knowledge.</p>
+                        <div class="flex space-x-3">
+                            <a href="#" class="text-gray-400 hover:text-arc-neon transition"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="text-gray-400 hover:text-arc-neon transition"><i class="fab fa-discord"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Player 4 -->
+                <div class="player-card bg-black bg-opacity-30 rounded-lg p-6 transition">
+                    <div class="flex flex-col items-center text-center">
+                        <div class="w-24 h-24 rounded-full bg-gradient-to-br from-arc-purple to-arc-pink mb-4 overflow-hidden">
+                            <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Player" class="w-full h-full object-cover">
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-1">KillJoy</h3>
+                        <div class="role-badge bg-yellow-600 bg-opacity-20 text-arc-neon px-3 py-1 rounded-full text-sm mb-3">
+                            Sentinel
+                        </div>
+                        <p class="text-gray-300 text-sm mb-4">Defensive specialist with innovative setups. Consistently top fragger in crucial matches.</p>
+                        <div class="flex space-x-3">
+                            <a href="#" class="text-gray-400 hover:text-arc-neon transition"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="text-gray-400 hover:text-arc-neon transition"><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Player 5 -->
+                <div class="player-card bg-black bg-opacity-30 rounded-lg p-6 transition">
+                    <div class="flex flex-col items-center text-center">
+                        <div class="w-24 h-24 rounded-full bg-gradient-to-br from-arc-purple to-arc-pink mb-4 overflow-hidden">
+                            <img src="https://randomuser.me/api/portraits/men/90.jpg" alt="Player" class="w-full h-full object-cover">
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-1">IGL_Prodigy</h3>
+                        <div class="role-badge bg-red-600 bg-opacity-20 text-arc-neon px-3 py-1 rounded-full text-sm mb-3">
+                            IGL
+                        </div>
+                        <p class="text-gray-300 text-sm mb-4">Team captain and shot caller. Known for adaptive strategies and calm under pressure.</p>
+                        <div class="flex space-x-3">
+                            <a href="#" class="text-gray-400 hover:text-arc-neon transition"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="text-gray-400 hover:text-arc-neon transition"><i class="fab fa-twitch"></i></a>
+                            <a href="#" class="text-gray-400 hover:text-arc-neon transition"><i class="fab fa-youtube"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Coach -->
+                <div class="player-card bg-black bg-opacity-30 rounded-lg p-6 transition">
+                    <div class="flex flex-col items-center text-center">
+                        <div class="w-24 h-24 rounded-full bg-gradient-to-br from-arc-purple to-arc-pink mb-4 overflow-hidden">
+                            <img src="https://randomuser.me/api/portraits/men/22.jpg" alt="Player" class="w-full h-full object-cover">
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-1">Coach Viper</h3>
+                        <div class="role-badge bg-green-600 bg-opacity-20 text-arc-neon px-3 py-1 rounded-full text-sm mb-3">
+                            Head Coach
+                        </div>
+                        <p class="text-gray-300 text-sm mb-4">Former professional player with championship experience. Focuses on team synergy and meta analysis.</p>
+                        <div class="flex space-x-3">
+                            <a href="#" class="text-gray-400 hover:text-arc-neon transition"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="text-gray-400 hover:text-arc-neon transition"><i class="fab fa-linkedin"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Achievements & Highlights -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold gradient-text mb-8 neon-border inline-block">ACHIEVEMENTS & HIGHLIGHTS</h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Timeline -->
+                <div class="bg-black bg-opacity-30 rounded-lg p-6">
+                    <h3 class="text-xl font-bold text-white mb-6 flex items-center">
+                        <i class="fas fa-trophy text-arc-neon mr-2"></i>
+                        Tournament Wins
+                    </h3>
+                    
+                    <div class="space-y-6 relative pl-8">
+                        <!-- Timeline Item 1 -->
+                        <div class="timeline-item relative">
+                            <div class="absolute -left-8 top-0 w-4 h-4 rounded-full bg-arc-blue"></div>
+                            <div class="bg-black bg-opacity-50 rounded-lg p-4 border-l-4 border-arc-purple">
+                                <div class="flex justify-between items-start">
+                                    <h4 class="font-bold text-white">Valorant Champions Tour 2023</h4>
+                                    <span class="text-sm text-arc-neon">1st Place</span>
+                                </div>
+                                <p class="text-gray-300 text-sm mt-2">Defeated Team Liquid 3-1 in the grand finals with dominant performances on Haven and Ascent.</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Timeline Item 2 -->
+                        <div class="timeline-item relative">
+                            <div class="absolute -left-8 top-0 w-4 h-4 rounded-full bg-arc-pink"></div>
+                            <div class="bg-black bg-opacity-50 rounded-lg p-4 border-l-4 border-arc-blue">
+                                <div class="flex justify-between items-start">
+                                    <h4 class="font-bold text-white">Masters Reykjavík 2023</h4>
+                                    <span class="text-sm text-arc-neon">2nd Place</span>
+                                </div>
+                                <p class="text-gray-300 text-sm mt-2">Close finals against Sentinels, showcasing incredible teamwork on Icebox.</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Timeline Item 3 -->
+                        <div class="timeline-item relative">
+                            <div class="absolute -left-8 top-0 w-4 h-4 rounded-full bg-arc-neon"></div>
+                            <div class="bg-black bg-opacity-50 rounded-lg p-4 border-l-4 border-arc-pink">
+                                <div class="flex justify-between items-start">
+                                    <h4 class="font-bold text-white">First Strike North America</h4>
+                                    <span class="text-sm text-arc-neon">1st Place</span>
+                                </div>
+                                <p class="text-gray-300 text-sm mt-2">The team's first major tournament win, establishing them as top contenders.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Latest Match VOD -->
+                <div class="bg-black bg-opacity-30 rounded-lg p-6">
+                    <h3 class="text-xl font-bold text-white mb-6 flex items-center">
+                        <i class="fas fa-play-circle text-arc-neon mr-2"></i>
+                        Latest Match Highlights
+                    </h3>
+                    
+                    <div class="relative pt-[56.25%] rounded-lg overflow-hidden border border-arc-blue animate-glow">
+                        <iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    
+                    <div class="mt-4 flex justify-between items-center">
+                        <div>
+                            <h4 class="font-bold text-white">VCT 2023 - Grand Finals</h4>
+                            <p class="text-gray-300 text-sm">vs Team Liquid</p>
+                        </div>
+                        <a href="#" class="text-arc-neon hover:text-white transition flex items-center">
+                            <span class="mr-1">Watch Full</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Upcoming Schedule -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold gradient-text mb-8 neon-border inline-block">UPCOMING SCHEDULE</h2>
+            
+            <!-- Desktop Table -->
+            <div class="hidden md:block overflow-x-auto">
+                <table class="w-full bg-black bg-opacity-30 rounded-lg overflow-hidden">
+                    <thead>
+                        <tr class="bg-gradient-to-r from-arc-purple to-arc-pink text-white">
+                            <th class="py-3 px-4 text-left">Date</th>
+                            <th class="py-3 px-4 text-left">Event</th>
+                            <th class="py-3 px-4 text-left">Opponent</th>
+                            <th class="py-3 px-4 text-left">Time</th>
+                            <th class="py-3 px-4 text-left">Stream</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-gray-800 hover:bg-black hover:bg-opacity-50 transition">
+                            <td class="py-4 px-4">Jun 15, 2023</td>
+                            <td class="py-4 px-4 flex items-center">
+                                <img src="/images/VCT.webp" alt="VCT" class="w-6 h-6 mr-2 rounded">
+                                VCT Stage 2
+                            </td>
+                            <td class="py-4 px-4">Sentinels</td>
+                            <td class="py-4 px-4">7:00 PM EST</td>
+                            <td class="py-4 px-4">
+                                <a href="#" class="text-arc-neon hover:text-white transition flex items-center">
+                                    <i class="fab fa-twitch mr-1"></i>
+                                    <span>Twitch</span>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-800 hover:bg-black hover:bg-opacity-50 transition">
+                            <td class="py-4 px-4">Jun 22, 2023</td>
+                            <td class="py-4 px-4 flex items-center">
+                                <img src="/images/VCT.webp" alt="VCT" class="w-6 h-6 mr-2 rounded">
+                                VCT Stage 2
+                            </td>
+                            <td class="py-4 px-4">100 Thieves</td>
+                            <td class="py-4 px-4">6:30 PM EST</td>
+                            <td class="py-4 px-4">
+                                <a href="#" class="text-arc-neon hover:text-white transition flex items-center">
+                                    <i class="fab fa-youtube mr-1"></i>
+                                    <span>YouTube</span>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-800 hover:bg-black hover:bg-opacity-50 transition">
+                            <td class="py-4 px-4">Jul 5, 2023</td>
+                            <td class="py-4 px-4 flex items-center">
+                                <img src="/images/redbull.png" alt="Red Bull" class="w-6 h-6 mr-2 rounded">
+                                Red Bull Home Ground
+                            </td>
+                            <td class="py-4 px-4">Fnatic</td>
+                            <td class="py-4 px-4">3:00 PM EST</td>
+                            <td class="py-4 px-4">
+                                <a href="#" class="text-arc-neon hover:text-white transition flex items-center">
+                                    <i class="fab fa-twitch mr-1"></i>
+                                    <span>Twitch</span>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-black hover:bg-opacity-50 transition">
+                            <td class="py-4 px-4">Jul 12, 2023</td>
+                            <td class="py-4 px-4 flex items-center">
+                                <img src="/images/VCT.webp" alt="VCT" class="w-6 h-6 mr-2 rounded">
+                                VCT Stage 2
+                            </td>
+                            <td class="py-4 px-4">Optic Gaming</td>
+                            <td class="py-4 px-4">8:00 PM EST</td>
+                            <td class="py-4 px-4">
+                                <a href="#" class="text-arc-neon hover:text-white transition flex items-center">
+                                    <i class="fab fa-youtube mr-1"></i>
+                                    <span>YouTube</span>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Mobile Accordion -->
+            <div class="md:hidden space-y-3">
+                <!-- Match 1 -->
+                <div class="accordion bg-black bg-opacity-30 rounded-lg overflow-hidden">
+                    <button class="accordion-button w-full flex justify-between items-center p-4 text-left">
+                        <div>
+                            <div class="font-bold">vs Sentinels</div>
+                            <div class="text-sm text-gray-400">Jun 15, 2023 • 7:00 PM EST</div>
+                        </div>
+                        <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="p-4 pt-0 border-t border-gray-800">
+                            <div class="flex items-center mb-2">
+                                <img src="https://via.placeholder.com/40x40?text=VCT" alt="VCT" class="w-5 h-5 mr-2 rounded">
+                                <span>VCT Stage 2</span>
+                            </div>
+                            <a href="#" class="inline-block text-arc-neon hover:text-white transition flex items-center">
+                                <i class="fab fa-twitch mr-1"></i>
+                                <span>Watch on Twitch</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Match 2 -->
+                <div class="accordion bg-black bg-opacity-30 rounded-lg overflow-hidden">
+                    <button class="accordion-button w-full flex justify-between items-center p-4 text-left">
+                        <div>
+                            <div class="font-bold">vs 100 Thieves</div>
+                            <div class="text-sm text-gray-400">Jun 22, 2023 • 6:30 PM EST</div>
+                        </div>
+                        <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="p-4 pt-0 border-t border-gray-800">
+                            <div class="flex items-center mb-2">
+                                <img src="https://via.placeholder.com/40x40?text=VCT" alt="VCT" class="w-5 h-5 mr-2 rounded">
+                                <span>VCT Stage 2</span>
+                            </div>
+                            <a href="#" class="inline-block text-arc-neon hover:text-white transition flex items-center">
+                                <i class="fab fa-youtube mr-1"></i>
+                                <span>Watch on YouTube</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Match 3 -->
+                <div class="accordion bg-black bg-opacity-30 rounded-lg overflow-hidden">
+                    <button class="accordion-button w-full flex justify-between items-center p-4 text-left">
+                        <div>
+                            <div class="font-bold">vs Fnatic</div>
+                            <div class="text-sm text-gray-400">Jul 5, 2023 • 3:00 PM EST</div>
+                        </div>
+                        <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="p-4 pt-0 border-t border-gray-800">
+                            <div class="flex items-center mb-2">
+                                <img src="https://via.placeholder.com/40x40?text=Red+Bull" alt="Red Bull" class="w-5 h-5 mr-2 rounded">
+                                <span>Red Bull Home Ground</span>
+                            </div>
+                            <a href="#" class="inline-block text-arc-neon hover:text-white transition flex items-center">
+                                <i class="fab fa-twitch mr-1"></i>
+                                <span>Watch on Twitch</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Join CTA -->
+        <section class="gradient-bg rounded-lg p-8 md:p-12 text-center mb-16">
+            <h2 class="text-3xl font-bold gradient-text mb-4">WANT TO JOIN THE TEAM?</h2>
+            <p class="text-white max-w-2xl mx-auto mb-8">We're always looking for talented players to join our academy team or participate in tryouts. If you think you have what it takes to compete at the highest level, apply now!</p>
+            <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                <a href="/pages/Tryout form/tryout-view.html" class="bg-gradient-to-r from-arc-purple to-arc-pink text-white px-8 py-3 rounded-full font-bold hover:opacity-90 transition">Request Tryout</a>
+                <a href="/pages/Scrim form/scrim-view.html" class="bg-transparent border-2 border-arc-neon text-arc-neon px-8 py-3 rounded-full font-bold hover:bg-arc-neon hover:text-black transition">Apply to Scrim</a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-12 px-4 sm:px-6 lg:px-8 bg-primary border-t border-secondary">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center mb-6 md:mb-0">
+                    <div class="gradient-border rounded-full p-1">
+                        <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
+                            <span class="font-mono font-bold text-xl gradient-text">BA</span>
+                        </div>
+                    </div>
+                    <span class="ml-3 text-xl font-bold gradient-text">BLACK ARC ESPORTS</span>
+                </div>
+                
+                <div class="flex space-x-6">
+                  <ul class="flex space-x-6">
+                        <li><a href="#" class="text-gray-400 hover:text-neon-pink transition"><i class="fab fa-twitter mr-2"></i> Twitter</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-neon-pink transition"><i class="fab fa-instagram mr-2"></i> Instagram</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-neon-pink transition"><i class="fab fa-twitch mr-2"></i> Twitch</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-neon-pink transition"><i class="fab fa-discord mr-2"></i> Discord</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-secondary flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-500 text-sm mb-4 md:mb-0">
+                    &copy; 2023 Black Arc Esports. All rights reserved.
+                </p>
+                
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-500 hover:text-white text-sm">PRIVACY POLICY</a>
+                    <a href="#" class="text-gray-500 hover:text-white text-sm">TERMS OF SERVICE</a>
+                    <a href="#" class="text-gray-500 hover:text-white text-sm">COOKIE POLICY</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+       // Mobile menu toggle
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('navMenu');
+        
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+        // Accordion functionality
+        const accordions = document.querySelectorAll('.accordion');
+        
+        accordions.forEach(accordion => {
+            const button = accordion.querySelector('.accordion-button');
+            const content = accordion.querySelector('.accordion-content');
+            const icon = button.querySelector('i');
+            
+            button.addEventListener('click', () => {
+                accordion.classList.toggle('active');
+                
+                if (content.style.maxHeight) {
+                    content.style.maxHeight = null;
+                    icon.style.transform = 'rotate(0deg)';
+                } else {
+                    content.style.maxHeight = content.scrollHeight + 'px';
+                    icon.style.transform = 'rotate(180deg)';
+                }
+            });
+        });
+        
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    if (mobileMenu.classList.contains('open')) {
+                        mobileMenu.classList.remove('open');
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

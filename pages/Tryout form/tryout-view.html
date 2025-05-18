@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Black Arc Esports | Tryout Application</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0f0f13',
+                        secondary: '#1a1a24',
+                        accent: '#8a2be2',
+                        neon: '#ff00ff',
+                        highlight: '#ff3860',
+                    },
+                    fontFamily: {
+                        'sans': ['Rajdhani', 'sans-serif'],
+                        'mono': ['Major Mono Display', 'monospace'],
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        glow: {
+                            'from': { 'text-shadow': '0 0 5px #fff, 0 0 10px #fff, 0 0 15px #ff00ff, 0 0 20px #ff00ff' },
+                            'to': { 'text-shadow': '0 0 10px #fff, 0 0 20px #fff, 0 0 30px #ff00ff, 0 0 40px #ff00ff' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Major+Mono+Display&display=swap');
+        
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background-color: #0f0f13;
+            color: white;
+            overflow-x: hidden;
+            margin: 0px;
+            padding: 0px;
+        }
+        .floating-card {
+            background: rgba(15, 15, 25, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        .gradient-text {
+        background: linear-gradient(90deg, #8a2be2, #ff00ff);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        }
+
+        .floating-card:hover {
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+            transform: translateY(-2px);
+        }
+        
+        .neon-pink {
+            color: #ff1493;
+            text-shadow: 0 0 8px rgba(255, 20, 147, 0.4);
+        }
+        
+        .neon-blue {
+            color: #00bfff;
+            text-shadow: 0 0 8px rgba(0, 191, 255, 0.4);
+        }
+        
+        .input-field {
+            background: rgba(20, 20, 30, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .input-field:focus {
+            border-color: rgba(0, 191, 255, 0.5);
+            box-shadow: 0 0 0 3px rgba(0, 191, 255, 0.1);
+            outline: none;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(45deg, rgba(255, 20, 147, 0.8), rgba(0, 191, 255, 0.8));
+            transition: all 0.3s ease;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 191, 255, 0.3);
+        }
+        
+        .toggle-container {
+            background: rgba(25, 25, 35, 0.7);
+            border-radius: 12px;
+            padding: 2px;
+        }
+        
+        .toggle-option {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 10px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .toggle-option.active {
+            background: rgba(0, 191, 255, 0.2);
+            color: #00bfff;
+            font-weight: 600;
+        }
+        
+        .toggle-option:not(.active):hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .multi-select {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .multi-select.open {
+            max-height: 200px;
+        }
+        
+        .checkbox-item {
+            transition: all 0.2s ease;
+        }
+        
+        .checkbox-item:hover {
+            background: rgba(0, 191, 255, 0.1);
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .glow-hover:hover {
+            box-shadow: 0 0 15px rgba(0, 191, 255, 0.3);
+        }
+        
+        .select-arrow {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23e2e2e2' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+        }
+
+                .hamburger {
+            transition: all 0.3s ease;
+        }
+        
+        .hamburger.active {
+            transform: rotate(90deg);
+        }
+        
+        .nav-menu {
+            transition: all 0.3s ease;
+            max-height: 0;
+            overflow: hidden;
+        }
+        
+        .nav-menu.active {
+            max-height: 500px;
+        }
+        .bg-grid {
+            background-image: 
+                linear-gradient(rgba(138, 43, 226, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(138, 43, 226, 0.1) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+    </style>
+
+<!-- Navigation -->
+<nav class="fixed-top w-full z-50 bg-primary/90 backdrop-blur-md border-b border-secondary">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16 items-center">
+            <!-- Logo -->
+                <a href="/index.html" class="flex-shrink-0 flex items-center">
+                    <div class="gradient-border rounded-full p-1">
+                        <div class="w-10 h-10 rounded-full bg-violet-500 flex items-center justify-center">
+                            <img src="/images/LogoNavBarAndroid.png" alt="LogoPic" class="w-8 h-8 object-contain filter grayscale hover:grayscale-0">
+                        </div>
+                    </div>
+                    <span class="ml-3 text-xl font-bold gradient-text hidden sm:block">BLACK ARC</span>
+                </a>
+
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex space-x-8">
+                <a href="/index.html" class="nav-link text-white font-semibold">HOME</a>
+                <a href="/index.html" class="nav-link text-white font-semibold">ABOUT</a>
+                <a href="/pages/All teams/team-view.html" class="nav-link text-white font-semibold">TEAMS</a>
+                <a href="/pages/schedule display/schedule-view.html" class="nav-link text-white font-semibold">EVENTS</a>
+                <a href="/pages/Join Form/join-view.html" class="nav-link text-white font-semibold">JOIN US</a>
+                <a href="/index.html" class="nav-link text-white font-semibold">CONTACT</a>
+            </div>
+
+            <!-- Mobile Hamburger Button -->
+            <button id="hamburger" class="md:hidden text-white focus:outline-none">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+        </div>
+    </div>
+            <!-- Breadcrumbs -->
+        <div class="container mx-auto px-4 pb-3 hidden md:block">
+            <div class="text-sm text-gray-400">
+                <a href="/index.html" class="hover:text-arc-neon transition">Home</a> /
+                <a href="/pages/All teams/team-view.html" class="hover:text-arc-neon transition">Teams</a> / 
+                <a href="/pages/Team card view/team-card-view.html" class="hover:text-arc-neon transition">Members</a> / 
+                <a href="/pages/Tryout form/tryout-view.html" class="text-neon">Tryouts<a> /  
+            </div>
+        </div>
+    <!-- Mobile Menu -->
+    <div id="navMenu" class="nav-menu md:hidden bg-primary/95 backdrop-blur-md border-t border-secondary">
+        <div class="px-6 py-4 flex flex-col space-y-3">
+                <a href="/index.html" class="nav-link text-white font-semibold">HOME</a>
+                <a href="/index.html" class="nav-link text-white font-semibold">ABOUT</a>
+                <a href="/pages/All teams/team-view.html" class="nav-link text-white font-semibold">TEAMS</a>
+                <a href="/pages/schedule display/schedule-view.html" class="nav-link text-white font-semibold">EVENTS</a>
+                <a href="/pages/Join Form/join-view.html" class="nav-link text-white font-semibold">JOIN US</a>
+                <a href="/index.html" class="nav-link text-white font-semibold">CONTACT</a>
+        </div>
+    </div>
+</nav>
+
+
+</head>
+<body class="bg-grid flex flex-col items-center justify-center">
+
+    <div class="w-full max-w-2xl mx-auto pt-20">
+        <div class="text-center mb-8 fade-in">
+            <h1 class="text-4xl md:text-5xl font-bold mb-2">
+                <span class="neon-pink">BLACK</span> 
+                <span class="neon-blue">ARC</span> 
+                <span class="text-white">TRYOUTS</span>
+            </h1>
+            <p class="text-gray-400">Apply to join our competitive roster or content team</p>
+        </div>
+        
+        <div class="floating-card p-6 md:p-8 mb-8 fade-in glow-hover">
+            <form id="tryoutForm" class="space-y-6">
+                <!-- Application Type Toggle -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-3">Application Type</label>
+                    <div class="toggle-container flex">
+                        <div class="toggle-option active" data-value="player">
+                            <i class="fas fa-gamepad mr-2"></i> Player
+                        </div>
+                        <div class="toggle-option" data-value="creator">
+                            <i class="fas fa-video mr-2"></i> Content Creator
+                        </div>
+                        <div class="toggle-option" data-value="analyst">
+                            <i class="fas fa-chart-line mr-2"></i> Analyst
+                        </div>
+                    </div>
+                    <input type="hidden" id="applicationType" name="applicationType" value="player">
+                </div>
+                
+                <!-- Player Info Section -->
+                <div>
+                    <label for="playerName" class="block text-sm font-medium text-gray-300 mb-1">Full Name</label>
+                    <div class="relative">
+                        <input type="text" id="playerName" name="playerName" required
+                            class="w-full px-4 py-3 rounded-lg input-field focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            placeholder="Your full name">
+                        <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                            <i class="fas fa-user text-gray-500"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="game" class="block text-sm font-medium text-gray-300 mb-1">Game</label>
+                        <div class="relative">
+                            <select id="game" name="game" required
+                                class="w-full px-4 py-3 rounded-lg input-field focus:ring-2 focus:ring-blue-500 focus:border-transparent select-arrow appearance-none">
+                                <option value="" disabled selected>Select a game</option>
+                                <option value="Valorant">Valorant</option>
+                                <option value="League of Legends">League of Legends</option>
+                                <option value="Counter-Strike 2">Counter-Strike 2</option>
+                                <option value="Dota 2">Dota 2</option>
+                                <option value="Overwatch 2">Overwatch 2</option>
+                                <option value="Rainbow Six Siege">Rainbow Six Siege</option>
+                                <option value="Apex Legends">Apex Legends</option>
+                            </select>
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                <i class="fas fa-gamepad text-gray-500"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label for="rank" class="block text-sm font-medium text-gray-300 mb-1">Rank</label>
+                        <div class="relative">
+                            <input type="text" id="rank" name="rank" required
+                                class="w-full px-4 py-3 rounded-lg input-field focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                placeholder="Your current rank">
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                <i class="fas fa-trophy text-gray-500"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="role" class="block text-sm font-medium text-gray-300 mb-1">Preferred Role</label>
+                        <div class="relative">
+                            <select id="role" name="role" required
+                                class="w-full px-4 py-3 rounded-lg input-field focus:ring-2 focus:ring-blue-500 focus:border-transparent select-arrow appearance-none">
+                                <option value="" disabled selected>Select your role</option>
+                                <option value="Duelist">Duelist</option>
+                                <option value="Initiator">Initiator</option>
+                                <option value="Controller">Controller</option>
+                                <option value="Sentinel">Sentinel</option>
+                                <option value="Top Lane">Top Lane</option>
+                                <option value="Jungle">Jungle</option>
+                                <option value="Mid Lane">Mid Lane</option>
+                                <option value="ADC">ADC</option>
+                                <option value="Support">Support</option>
+                                <option value="Entry Fragger">Entry Fragger</option>
+                                <option value="Support">Support</option>
+                                <option value="IGL">IGL</option>
+                                <option value="Lurker">Lurker</option>
+                            </select>
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                <i class="fas fa-chess-queen text-gray-500"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label for="timezone" class="block text-sm font-medium text-gray-300 mb-1">Time Zone</label>
+                        <div class="relative">
+                            <select id="timezone" name="timezone" required
+                                class="w-full px-4 py-3 rounded-lg input-field focus:ring-2 focus:ring-blue-500 focus:border-transparent select-arrow appearance-none">
+                                <option value="" disabled selected>Select your time zone</option>
+                                <option value="EST">Eastern Time (EST)</option>
+                                <option value="CST">Central Time (CST)</option>
+                                <option value="MST">Mountain Time (MST)</option>
+                                <option value="PST">Pacific Time (PST)</option>
+                                <option value="GMT">GMT</option>
+                                <option value="CET">Central European Time (CET)</option>
+                                <option value="AEST">Australian Eastern Time (AEST)</option>
+                            </select>
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                <i class="fas fa-globe-americas text-gray-500"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Availability Multi-Select -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-1">Availability</label>
+                    <div class="relative">
+                        <div class="w-full px-4 py-3 rounded-lg input-field cursor-pointer flex justify-between items-center" id="availabilityToggle">
+                            <span class="text-gray-400">Select available days</span>
+                            <i class="fas fa-chevron-down text-gray-500 transition-transform duration-200"></i>
+                        </div>
+                        <div class="multi-select mt-1 rounded-lg overflow-hidden" id="availabilityDropdown">
+                            <div class="grid grid-cols-2 md:grid-cols-3 gap-1 p-2 bg-gray-900 rounded-lg">
+                                <label class="checkbox-item flex items-center p-2 rounded cursor-pointer">
+                                    <input type="checkbox" name="availability" value="monday" class="mr-2">
+                                    Monday
+                                </label>
+                                <label class="checkbox-item flex items-center p-2 rounded cursor-pointer">
+                                    <input type="checkbox" name="availability" value="tuesday" class="mr-2">
+                                    Tuesday
+                                </label>
+                                <label class="checkbox-item flex items-center p-2 rounded cursor-pointer">
+                                    <input type="checkbox" name="availability" value="wednesday" class="mr-2">
+                                    Wednesday
+                                </label>
+                                <label class="checkbox-item flex items-center p-2 rounded cursor-pointer">
+                                    <input type="checkbox" name="availability" value="thursday" class="mr-2">
+                                    Thursday
+                                </label>
+                                <label class="checkbox-item flex items-center p-2 rounded cursor-pointer">
+                                    <input type="checkbox" name="availability" value="friday" class="mr-2">
+                                    Friday
+                                </label>
+                                <label class="checkbox-item flex items-center p-2 rounded cursor-pointer">
+                                    <input type="checkbox" name="availability" value="saturday" class="mr-2">
+                                    Saturday
+                                </label>
+                                <label class="checkbox-item flex items-center p-2 rounded cursor-pointer">
+                                    <input type="checkbox" name="availability" value="sunday" class="mr-2">
+                                    Sunday
+                                </label>
+                                <label class="checkbox-item flex items-center p-2 rounded cursor-pointer">
+                                    <input type="checkbox" name="availability" value="morning" class="mr-2">
+                                    Mornings
+                                </label>
+                                <label class="checkbox-item flex items-center p-2 rounded cursor-pointer">
+                                    <input type="checkbox" name="availability" value="afternoon" class="mr-2">
+                                    Afternoons
+                                </label>
+                                <label class="checkbox-item flex items-center p-2 rounded cursor-pointer">
+                                    <input type="checkbox" name="availability" value="evening" class="mr-2">
+                                    Evenings
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="highlightLink" class="block text-sm font-medium text-gray-300 mb-1">Highlight Reel Link</label>
+                    <div class="relative">
+                        <input type="url" id="highlightLink" name="highlightLink"
+                            class="w-full px-4 py-3 rounded-lg input-field focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            placeholder="YouTube or Twitch URL">
+                        <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                            <i class="fab fa-youtube text-gray-500"></i>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-1">Please provide a link to your best plays or content</p>
+                </div>
+                
+                <div>
+                    <label for="additionalInfo" class="block text-sm font-medium text-gray-300 mb-1">Additional Information</label>
+                    <textarea id="additionalInfo" name="additionalInfo" rows="3"
+                        class="w-full px-4 py-3 rounded-lg input-field focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        placeholder="Tell us about your competitive experience, achievements, etc."></textarea>
+                </div>
+                
+                <div class="pt-4">
+                    <button type="submit" 
+                        class="w-full px-6 py-3 rounded-lg submit-btn text-white font-medium hover:shadow-lg transition-all duration-300">
+                        Submit Application
+                    </button>
+                </div>
+            </form>
+        </div>
+        
+        <div class="text-center text-gray-500 text-sm">
+            <p>We'll review your application and contact you within 3-5 business days</p>
+            <p class="mt-1">© 2023 Black Arc Esports. All rights reserved.</p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-12 px-4 w-full sm:px-6 lg:px-8 bg-primary border-t border-secondary">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center mb-6 md:mb-0">
+                    <div class="gradient-border rounded-full p-1">
+                        <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
+                            <span class="font-mono font-bold text-xl gradient-text">BA</span>
+                        </div>
+                    </div>
+                    <span class="ml-3 text-xl font-bold gradient-text">BLACK ARC ESPORTS</span>
+                </div>
+                
+                <div class="flex space-x-6">
+                  <ul class="flex space-x-6">
+                        <li><a href="#" class="text-gray-400 hover:text-neon-pink transition"><i class="fab fa-twitter mr-2"></i> Twitter</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-neon-pink transition"><i class="fab fa-instagram mr-2"></i> Instagram</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-neon-pink transition"><i class="fab fa-twitch mr-2"></i> Twitch</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-neon-pink transition"><i class="fab fa-discord mr-2"></i> Discord</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-secondary mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-500 text-sm mb-4 md:mb-0">
+                    &copy; 2023 Black Arc Esports. All rights reserved.
+                </p>
+                
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-500 hover:text-white text-sm">PRIVACY POLICY</a>
+                    <a href="#" class="text-gray-500 hover:text-white text-sm">TERMS OF SERVICE</a>
+                    <a href="#" class="text-gray-500 hover:text-white text-sm">COOKIE POLICY</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+               // Mobile menu toggle
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('navMenu');
+        
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Application type toggle
+            const toggleOptions = document.querySelectorAll('.toggle-option');
+            const applicationTypeInput = document.getElementById('applicationType');
+            
+            toggleOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    toggleOptions.forEach(opt => opt.classList.remove('active'));
+                    this.classList.add('active');
+                    applicationTypeInput.value = this.dataset.value;
+                });
+            });
+            
+            // Availability dropdown toggle
+            const availabilityToggle = document.getElementById('availabilityToggle');
+            const availabilityDropdown = document.getElementById('availabilityDropdown');
+            const chevronIcon = availabilityToggle.querySelector('i');
+            
+            availabilityToggle.addEventListener('click', function() {
+                availabilityDropdown.classList.toggle('open');
+                chevronIcon.classList.toggle('rotate-180');
+            });
+            
+            // Form submission
+            const form = document.getElementById('tryoutForm');
+            
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // In a real app, you would send the form data to a server here
+                const formData = new FormData(form);
+                const data = Object.fromEntries(formData.entries());
+                
+                // Get all checked availability options
+                const availability = [];
+                document.querySelectorAll('input[name="availability"]:checked').forEach(checkbox => {
+                    availability.push(checkbox.value);
+                });
+                data.availability = availability.join(', ');
+                
+                console.log('Form submitted:', data);
+                
+                // Show success message (in a real app, you might redirect or show a modal)
+                alert('Application submitted successfully! We will review your information and contact you soon.');
+                form.reset();
+                
+                // Reset toggle
+                toggleOptions.forEach(opt => opt.classList.remove('active'));
+                document.querySelector('.toggle-option[data-value="player"]').classList.add('active');
+                applicationTypeInput.value = 'player';
+            });
+            
+            // Add animation to form inputs on focus
+            const inputs = document.querySelectorAll('input, textarea, select');
+            inputs.forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.parentElement.classList.add('ring-2', 'ring-blue-500');
+                });
+                
+                input.addEventListener('blur', function() {
+                    this.parentElement.classList.remove('ring-2', 'ring-blue-500');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

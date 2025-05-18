@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Teams | Black Arc Esports</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0f0f13',
+                        secondary: '#1a1a24',
+                        accent: '#8a2be2',
+                        neon: '#ff00ff',
+                        highlight: '#ff3860',
+                    },
+                    fontFamily: {
+                        'sans': ['Rajdhani', 'sans-serif'],
+                        'mono': ['Major Mono Display', 'monospace'],
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        glow: {
+                            'from': { 'text-shadow': '0 0 5px #fff, 0 0 10px #fff, 0 0 15px #ff00ff, 0 0 20px #ff00ff' },
+                            'to': { 'text-shadow': '0 0 10px #fff, 0 0 20px #fff, 0 0 30px #ff00ff, 0 0 40px #ff00ff' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Major+Mono+Display&display=swap');
+        
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background-color: #0f0f13;
+            color: white;
+            overflow-x: hidden;
+        }
+        
+        .bg-grid {
+            background-image: 
+                linear-gradient(rgba(138, 43, 226, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(138, 43, 226, 0.1) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+        
+        .nav-link {
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background: linear-gradient(90deg, #8a2be2, #ff00ff);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .btn-glow {
+            box-shadow: 0 0 10px rgba(138, 43, 226, 0.5), 0 0 20px rgba(255, 0, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-glow:hover {
+            box-shadow: 0 0 15px rgba(138, 43, 226, 0.8), 0 0 30px rgba(255, 0, 255, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+            border: 1px solid rgba(138, 43, 226, 0.3);
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 0, 255, 0.7);
+            box-shadow: 0 10px 20px rgba(138, 43, 226, 0.2);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(90deg, #8a2be2, #ff00ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .gradient-border {
+            position: relative;
+        }
+        
+        .gradient-border::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: inherit;
+            padding: 2px;
+            background: linear-gradient(135deg, #8a2be2, #ff00ff);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+        
+        .scroll-smooth {
+            scroll-behavior: smooth;
+        }
+        
+        .filter-btn {
+            transition: all 0.3s ease;
+        }
+        
+        .filter-btn.active {
+            background: linear-gradient(135deg, #8a2be2, #ff00ff);
+            color: white;
+            box-shadow: 0 0 15px rgba(138, 43, 226, 0.5);
+        }
+        
+        .search-input:focus {
+            box-shadow: 0 0 0 2px rgba(138, 43, 226, 0.5);
+        }
+        
+        .sticky-header {
+            position: sticky;
+            top: 0;
+            z-index: 40;
+            backdrop-filter: blur(8px);
+        }
+        
+        @media (max-width: 768px) {
+            .mobile-menu {
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+            }
+            
+            .mobile-menu.active {
+                transform: translateX(0);
+            }
+            
+            .filters-container {
+                flex-direction: column;
+            }
+            
+            .search-container {
+                width: 100%;
+                margin-top: 1rem;
+            }
+        }
+        .hamburger {
+            transition: all 0.3s ease;
+        }
+        
+        .hamburger.active {
+            transform: rotate(90deg);
+        }
+        
+        .nav-menu {
+            transition: all 0.3s ease;
+            max-height: 0;
+            overflow: hidden;
+        }
+        
+        .nav-menu.active {
+            max-height: 500px;
+        }
+                .bg-grid {
+            background-image: 
+                linear-gradient(rgba(138, 43, 226, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(138, 43, 226, 0.1) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }        
+    </style>
+</head>
+<body class="bg-grid scroll-smooth">
+<!-- Navigation -->
+<nav class="fixed w-full z-50 bg-primary/90 backdrop-blur-md border-b border-secondary">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16 items-center">
+            <!-- Logo -->
+                <a href="/index.html" class="flex-shrink-0 flex items-center">
+                    <div class="gradient-border rounded-full p-1">
+                        <div class="w-10 h-10 rounded-full bg-violet-500 flex items-center justify-center">
+                            <img src="/images/LogoNavBarAndroid.png" alt="LogoPic" class="w-8 h-8 object-contain filter grayscale hover:grayscale-0">
+                        </div>
+                    </div>
+                    <span class="ml-3 text-xl font-bold gradient-text hidden sm:block">BLACK ARC</span>
+                </a>
+
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex space-x-8">
+                <a href="/index.html" class="nav-link text-white font-semibold">HOME</a>
+                <a href="/index.html" class="nav-link text-white font-semibold">ABOUT</a>
+                <a href="/pages/All teams/team-view.html" class="nav-link text-white font-semibold">TEAMS</a>
+                <a href="/pages/schedule display/schedule-view.html" class="nav-link text-white font-semibold">EVENTS</a>
+                <a href="/pages/Join Form/join-view.html" class="nav-link text-white font-semibold">JOIN US</a>
+                <a href="/index.html" class="nav-link text-white font-semibold">CONTACT</a>
+            </div>
+
+            <!-- Mobile Hamburger Button -->
+            <button id="hamburger" class="md:hidden text-white focus:outline-none">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+        </div>
+    </div>
+                    <!-- Breadcrumbs -->
+        <div class="container mx-auto px-4 pb-3 hidden md:block">
+            <div class="text-sm text-gray-400">
+                <a href="/index.html" class="hover:text-arc-neon transition">Home</a> / 
+                <a href="#" class="text-neon">Teams</a>
+            </div>
+        </div>
+    <!-- Mobile Menu -->
+    <div id="navMenu" class="nav-menu md:hidden bg-primary/95 backdrop-blur-md border-t border-secondary">
+        <div class="px-6 py-4 flex flex-col space-y-3">
+                <a href="/index.html" class="nav-link text-white font-semibold">HOME</a>
+                <a href="/index.html" class="nav-link text-white font-semibold">ABOUT</a>
+                <a href="/pages/All teams/team-view.html" class="nav-link text-white font-semibold">TEAMS</a>
+                <a href="/pages/schedule display/schedule-view.html" class="nav-link text-white font-semibold">EVENTS</a>
+                <a href="/pages/Join Form/join-view.html" class="nav-link text-white font-semibold">JOIN US</a>
+                <a href="/index.html" class="nav-link text-white font-semibold">CONTACT</a>
+        </div>
+    </div>
+</nav>
+    
+    <!-- Teams Header -->
+    <header class="sticky-header pt-24 pb-8 px-4 sm:px-6 lg:px-8 bg-primary/80 border-b border-secondary">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
+                <div>
+
+                    <h1 class="text-3xl md:text-5xl font-bold mb-2">
+                        <span class="gradient-text">ALL COMPETITIVE TEAMS</span>
+                    </h1>
+                    <p class="text-gray-300">Explore our professional esports rosters across multiple titles</p>
+                </div>
+                <div class="mt-4 md:mt-0">
+                    <a href="/pages/Join Form/join-view.html" class="btn-glow px-6 py-3 rounded-full bg-gradient-to-r from-accent to-neon text-white font-bold flex items-center">
+                        <i class="fas fa-user-plus mr-2"></i> JOIN OUR TEAMS
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Filters and Search -->
+    <section class="py-6 px-4 sm:px-6 lg:px-8 bg-secondary/50">
+        <div class="max-w-7xl mx-auto">
+            <div class="filters-container flex flex-wrap items-center justify-between">
+                <div class="flex flex-wrap space-x-2">
+                    <button class="filter-btn px-4 py-2 rounded-full bg-primary text-white border border-accent/50 mb-2" data-filter="all">
+                        ALL TEAMS
+                    </button>
+                    <button class="filter-btn px-4 py-2 rounded-full bg-primary text-white border border-accent/50 mb-2" data-filter="fps">
+                        FPS
+                    </button>
+                    <button class="filter-btn px-4 py-2 rounded-full bg-primary text-white border border-accent/50 mb-2" data-filter="moba">
+                        MOBA
+                    </button>
+                    <button class="filter-btn px-4 py-2 rounded-full bg-primary text-white border border-accent/50 mb-2" data-filter="battle-royale">
+                        BATTLE ROYALE
+                    </button>
+                    <button class="filter-btn px-4 py-2 rounded-full bg-primary text-white border border-accent/50 mb-2" data-filter="strategy">
+                        STRATEGY
+                    </button>
+                    <select id="rank-filter" class="bg-secondary text-white border border-neon px-4 py-2 rounded-md text-sm">
+                        <option value="all">All Rankings</option>
+                        <option value="1">Top 1</option>
+                        <option value="3">Top 3</option>
+                        <option value="5">Top 5</option>
+                        <option value="10">Top 10</option>
+                    </select>
+
+                </div>
+                
+                <div class="search-container relative">
+                    <input type="text" placeholder="Search teams..." class="search-input pl-10 pr-4 py-2 rounded-full bg-primary text-white border border-accent/50 w-full md:w-64 focus:outline-none">
+                    <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Teams Grid -->
+    <section class="py-12 px-4 sm:px-6 lg:px-8 bg-primary">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <!-- Team Card 1 - VALORANT -->
+                <div class="card-hover team-card bg-secondary rounded-xl p-6" data-category="fps">
+                    <div class="flex items-center mb-6">
+                        <div class="w-16 h-16 rounded-full bg-gradient-to-br from-accent to-neon flex items-center justify-center">
+                            <img src="/images/valorant.jpg" alt="Valorant" class="rounded-full object-cover">
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-xl font-bold text-white">VALORANT</h3>
+                            <span class="rank-label text-sm text-neon">CURRENT RANK: #2 NA</span>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mb-6">
+                        Our Valorant team dominates regional competitions with innovative strategies and pinpoint execution.
+                    </p>
+                    <div class="flex justify-between items-center">
+                        <div class="flex -space-x-2">
+                            <img src="/images/valo-mem-1.webp" alt="Player" class="w-8 h-8 rounded-full border border-accent">
+                            <img src="/images/valo-mem-2.webp" alt="Player" class="w-8 h-8 rounded-full border border-neon">
+                            <img src="/images/valo-mem-3.webp" alt="Player" class="w-8 h-8 rounded-full border border-accent">
+                            <img src="/images/valo-mem-4.webp" alt="Player" class="w-8 h-8 rounded-full border border-neon">
+                            <img src="/images/valo-mem-5.webp" alt="Player" class="w-8 h-8 rounded-full border border-accent">
+                        </div>
+                        <a href="/pages/Team card view/team-card-view.html" class="text-white hover:text-neon text-lg"><i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Team Card 2 - LEAGUE OF LEGENDS -->
+                <div class="card-hover team-card bg-secondary rounded-xl p-6" data-category="moba">
+                    <div class="flex items-center mb-6">
+                        <div class="w-16 h-16 rounded-full bg-gradient-to-br from-accent to-neon flex items-center justify-center">
+                            <img src="/images/League_of_Legends_logo.webp" alt="League of Legends" class="rounded-full object-cover">
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-xl font-bold text-white">LEAGUE OF LEGENDS</h3>
+                            <span class="rank-label text-sm text-neon">CURRENT RANK: #5 EU</span>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mb-6">
+                        The LoL squad brings disciplined macro play and explosive teamfighting to every match.
+                    </p>
+                    <div class="flex justify-between items-center">
+                        <div class="flex -space-x-2">
+                            <img src="/images/LoL-mem-1.webp" alt="Player" class="w-8 h-8 rounded-full border border-accent">
+                            <img src="/images/LoL-mem-2.webp" alt="Player" class="w-8 h-8 rounded-full border border-neon">
+                            <img src="/images/LoL-mem-3.webp" alt="Player" class="w-8 h-8 rounded-full border border-accent">
+                            <img src="/images/LoL-mem-4.webp" alt="Player" class="w-8 h-8 rounded-full border border-neon">
+                            <img src="/images/LoL-mem-5.webp" alt="Player" class="w-8 h-8 rounded-full border border-accent">
+                        </div>
+                        <a href="#" class="text-white hover:text-neon text-lg"><i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Team Card 3 - CS:GO -->
+                <div class="card-hover team-card bg-secondary rounded-xl p-6" data-category="fps">
+                    <div class="flex items-center mb-6">
+                        <div class="w-16 h-16 rounded-full bg-gradient-to-br from-accent to-neon flex items-center justify-center">
+                            <img src="/images/csgo.webp" alt="CS:GO" class="rounded-full object-cover">
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-xl font-bold text-white">CS:GO</h3>
+                            <span class="rank-label text-sm text-neon">CURRENT RANK: #3 WORLD</span>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mb-6">
+                        Precision aim and tactical mastery define our championship-winning CS:GO roster.
+                    </p>
+                    <div class="flex justify-between items-center">
+                        <div class="flex -space-x-2">
+                            <img src="/images/LoL-mem-1.webp" alt="Player" class="w-8 h-8 rounded-full border border-accent">
+                            <img src="/images/LoL-mem-2.webp" alt="Player" class="w-8 h-8 rounded-full border border-neon">
+                            <img src="/images/LoL-mem-3.webp" alt="Player" class="w-8 h-8 rounded-full border border-accent">
+                            <img src="/images/LoL-mem-4.webp" alt="Player" class="w-8 h-8 rounded-full border border-neon">
+                            <img src="/images/LoL-mem-5.webp" alt="Player" class="w-8 h-8 rounded-full border border-accent">
+                        </div>
+                        <a href="/pages/Team card view/team-card-view.html" class="text-white hover:text-neon text-lg"><i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Team Card 4 - DOTA 2 -->
+                <div class="card-hover team-card bg-secondary rounded-xl p-6" data-category="moba">
+                    <div class="flex items-center mb-6">
+                        <div class="w-16 h-16 rounded-full bg-gradient-to-br from-accent to-neon flex items-center justify-center">
+                            <img src="/images/dota2.png" alt="Dota 2" class="rounded-full object-cover">
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-xl font-bold text-white">DOTA 2</h3>
+                            <span class="rank-label text-sm text-neon">CURRENT RANK: #8 WORLD</span>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mb-6">
+                        Innovative drafts and mechanical brilliance power our Dota 2 team's success.
+                    </p>
+                    <div class="flex justify-between items-center">
+                        <div class="flex -space-x-2">
+                            <img src="/images/LoL-mem-1.webp" alt="Player" class="w-8 h-8 rounded-full border border-accent">
+                            <img src="/images/LoL-mem-2.webp" alt="Player" class="w-8 h-8 rounded-full border border-neon">
+                            <img src="/images/LoL-mem-3.webp" alt="Player" class="w-8 h-8 rounded-full border border-accent">
+                            <img src="/images/LoL-mem-4.webp" alt="Player" class="w-8 h-8 rounded-full border border-neon">
+                            <img src="/images/LoL-mem-5.webp" alt="Player" class="w-8 h-8 rounded-full border border-accent">
+                        </div>
+                        <a href="/pages/Team card view/team-card-view.html" class="text-white hover:text-neon text-lg"><i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Team Card 5 - APEX LEGENDS -->
+                <div class="card-hover team-card bg-secondary rounded-xl p-6" data-category="battle-royale">
+                    <div class="flex items-center mb-6">
+                        <div class="w-16 h-16 rounded-full bg-gradient-to-br from-accent to-neon flex items-center justify-center">
+                            <img src="/images/Apex.png" alt="Apex Legends" class="rounded-full object-cover">
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-xl font-bold text-white">APEX LEGENDS</h3>
+                            <span class="rank-label text-sm text-neon">CURRENT RANK: #1 NA</span>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mb-6">
+                        Lightning-fast rotations and elite gunplay make our Apex squad a consistent threat.
+                    </p>
+                    <div class="flex justify-between items-center">
+                        <div class="flex -space-x-2">
+                            <img src="/images/LoL-mem-1.webp" alt="Player" class="w-8 h-8 rounded-full border border-accent">
+                            <img src="/images/LoL-mem-2.webp" alt="Player" class="w-8 h-8 rounded-full border border-neon">
+                            <img src="/images/LoL-mem-3.webp" alt="Player" class="w-8 h-8 rounded-full border border-accent">
+                        </div>
+                        <a href="#" class="text-white hover:text-neon text-lg"><i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Team Card 6 - RAINBOW SIX -->
+                <div class="card-hover team-card bg-secondary rounded-xl p-6" data-category="fps">
+                    <div class="flex items-center mb-6">
+                        <div class="w-16 h-16 rounded-full bg-gradient-to-br from-accent to-neon flex items-center justify-center">
+                            <img src="/images/Rainbow6.jpg" alt="Rainbow Six" class="rounded-full object-cover">
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-xl font-bold text-white">RAINBOW SIX</h3>
+                            <span class="rank-label text-sm text-neon">CURRENT RANK: #4 EU</span>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mb-6">
+                        Tactical depth and explosive executes define our Siege team's playstyle.
+                    </p>
+                    <div class="flex justify-between items-center">
+                        <div class="flex -space-x-2">
+                            <img src="/images/LoL-mem-1.webp" alt="Player" class="w-8 h-8 rounded-full border border-accent">
+                            <img src="/images/LoL-mem-2.webp" alt="Player" class="w-8 h-8 rounded-full border border-neon">
+                            <img src="/images/LoL-mem-3.webp" alt="Player" class="w-8 h-8 rounded-full border border-accent">
+                            <img src="/images/LoL-mem-4.webp" alt="Player" class="w-8 h-8 rounded-full border border-neon">
+                            <img src="/images/LoL-mem-5.webp" alt="Player" class="w-8 h-8 rounded-full border border-accent">
+                        </div>
+                        <a href="#" class="text-white hover:text-neon text-lg"><i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Team Card 7 - OVERWATCH 2 -->
+                <div class="card-hover team-card bg-secondary rounded-xl p-6" data-category="fps">
+                    <div class="flex items-center mb-6">
+                        <div class="w-16 h-16 rounded-full bg-gradient-to-br from-accent to-neon flex items-center justify-center">
+                            <img src="/images/overwatch.jfif" alt="Overwatch" class="rounded-full object-cover">
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-xl font-bold text-white">OVERWATCH 2</h3>
+                            <span class="rank-label text-sm text-neon">CURRENT RANK: #6 NA</span>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mb-6">
+                        Dynamic team compositions and perfect ult coordination set us apart.
+                    </p>
+                    <div class="flex justify-between items-center">
+                        <div class="flex -space-x-2">
+                            <img src="/images/LoL-mem-1.webp" alt="Player" class="w-8 h-8 rounded-full border border-accent">
+                            <img src="/images/LoL-mem-2.webp" alt="Player" class="w-8 h-8 rounded-full border border-neon">
+                            <img src="/images/LoL-mem-3.webp" alt="Player" class="w-8 h-8 rounded-full border border-accent">
+                            <img src="/images/LoL-mem-4.webp" alt="Player" class="w-8 h-8 rounded-full border border-neon">
+                            <img src="/images/LoL-mem-5.webp" alt="Player" class="w-8 h-8 rounded-full border border-accent">
+                        </div>
+                        <a href="#" class="text-white hover:text-neon text-lg"><i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Team Card 8 - FORTNITE -->
+                <div class="card-hover team-card bg-secondary rounded-xl p-6" data-category="battle-royale">
+                    <div class="flex items-center mb-6">
+                        <div class="w-16 h-16 rounded-full bg-gradient-to-br from-accent to-neon flex items-center justify-center">
+                            <img src="/images/Fortnite-logo.png" alt="Fortnite" class="rounded-full object-cover">
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-xl font-bold text-white">FORTNITE</h3>
+                            <span class="rank-label text-sm text-neon">CURRENT RANK: #3 WORLD</span>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mb-6">
+                        Creative builds and lightning-fast edits from our champion Fortnite players.
+                    </p>
+                    <div class="flex justify-between items-center">
+                        <div class="flex -space-x-2">
+                            <img src="/images/LoL-mem-1.webp" alt="Player" class="w-8 h-8 rounded-full border border-accent">
+                            <img src="/images/LoL-mem-2.webp" alt="Player" class="w-8 h-8 rounded-full border border-neon">
+                        </div>
+                        <a href="#" class="text-white hover:text-neon text-lg"><i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Team Card 9 - HEARTHSTONE -->
+                <div class="card-hover team-card bg-secondary rounded-xl p-6" data-category="strategy">
+                    <div class="flex items-center mb-6">
+                        <div class="w-16 h-16 rounded-full bg-gradient-to-br from-accent to-neon flex items-center justify-center">
+                            <img src="/images/HearthStone.jfif" alt="Hearthstone" class="rounded-full object-cover">
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-xl font-bold text-white">HEARTHSTONE</h3>
+                            <span class="rank-label text-sm text-neon">CURRENT RANK: #2 WORLD</span>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mb-6">
+                        Masterful deck building and predictive plays from our Hearthstone champions.
+                    </p>
+                    <div class="flex justify-between items-center">
+                        <div class="flex -space-x-2">
+                            <img src="/images/LoL-mem-1.webp" alt="Player" class="w-8 h-8 rounded-full border border-accent">
+                            <img src="/images/LoL-mem-2.webp" alt="Player" class="w-8 h-8 rounded-full border border-neon">
+                            <img src="/images/LoL-mem-3.webp" alt="Player" class="w-8 h-8 rounded-full border border-accent">
+                        </div>
+                        <a href="#" class="text-white hover:text-neon text-lg"><i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Team Card 10 - STARCRAFT II -->
+                <div class="card-hover team-card bg-secondary rounded-xl p-6" data-category="strategy">
+                    <div class="flex items-center mb-6">
+                        <div class="w-16 h-16 rounded-full bg-gradient-to-br from-accent to-neon flex items-center justify-center">
+                            <img src="/images/starcraft.png" alt="Starcraft" class="rounded-full object-cover">
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-xl font-bold text-white">STARCRAFT II</h3>
+                            <span class="rank-label text-sm text-neon">CURRENT RANK: #1 WORLD</span>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mb-6">
+                        Blistering APM and strategic brilliance from our Starcraft II grandmasters.
+                    </p>
+                    <div class="flex justify-between items-center">
+                        <div class="flex -space-x-2">
+                            <img src="/images/LoL-mem-4.webp" alt="Player" class="w-8 h-8 rounded-full border border-neon">
+                            <img src="/images/LoL-mem-5.webp" alt="Player" class="w-8 h-8 rounded-full border border-accent">
+                        </div>
+                        <a href="#" class="text-white hover:text-neon text-lg"><i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Team Card 11 - CALL OF DUTY -->
+                <div class="card-hover team-card bg-secondary rounded-xl p-6" data-category="fps">
+                    <div class="flex items-center mb-6">
+                        <div class="w-16 h-16 rounded-full bg-gradient-to-br from-accent to-neon flex items-center justify-center">
+                            <img src="/images/COD.png" alt="Call of Duty" class=" rounded-full object-cover">
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-xl font-bold text-white">CALL OF DUTY</h3>
+                            <span class="rank-label text-sm text-neon">CURRENT RANK: #4 NA</span>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mb-6">
+                        Lightning reflexes and perfect teamwork from our CoD esports athletes.
+                    </p>
+                    <div class="flex justify-between items-center">
+                        <div class="flex -space-x-2">
+                            <img src="/images/LoL-mem-1.webp" alt="Player" class="w-8 h-8 rounded-full border border-accent">
+                            <img src="/images/LoL-mem-3.webp" alt="Player" class="w-8 h-8 rounded-full border border-accent">
+                            <img src="/images/LoL-mem-4.webp" alt="Player" class="w-8 h-8 rounded-full border border-neon">
+                            <img src="/images/LoL-mem-5.webp" alt="Player" class="w-8 h-8 rounded-full border border-accent">
+                        </div>
+                        <a href="#" class="text-white hover:text-neon text-lg"><i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Team Card 12 - ROCKET LEAGUE -->
+                <div class="card-hover team-card bg-secondary rounded-xl p-6" data-category="sports">
+                    <div class="flex items-center mb-6">
+                        <div class="w-16 h-16 rounded-full bg-gradient-to-br from-accent to-neon flex items-center justify-center">
+                            <img src="/images/RocketLeage.jpg" alt="Rocket League" class="rounded-full object-cover">
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-xl font-bold text-white">ROCKET LEAGUE</h3>
+                            <span class="rank-label text-sm text-neon">CURRENT RANK: #2 WORLD</span>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mb-6">
+                        Aerial mastery and perfect rotations from our Rocket League champions.
+                    </p>
+                    <div class="flex justify-between items-center">
+                        <div class="flex -space-x-2">
+                            <img src="/images/LoL-mem-2.webp" alt="Player" class="w-8 h-8 rounded-full border border-neon">
+                            <img src="/images/LoL-mem-3.webp" alt="Player" class="w-8 h-8 rounded-full border border-accent">
+                            <img src="/images/LoL-mem-5.webp" alt="Player" class="w-8 h-8 rounded-full border border-accent">
+                        </div>
+                        <a href="#" class="text-white hover:text-neon text-lg"><i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 px-4 sm:px-6 lg:px-8 bg-primary border-t border-secondary">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center mb-6 md:mb-0">
+                    <div class="gradient-border rounded-full p-1">
+                        <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
+                            <span class="font-mono font-bold text-xl gradient-text">BA</span>
+                        </div>
+                    </div>
+                    <span class="ml-3 text-xl font-bold gradient-text">BLACK ARC ESPORTS</span>
+                </div>
+                
+                <div class="flex space-x-6">
+                  <ul class="flex space-x-6">
+                        <li><a href="#" class="text-gray-400 hover:text-neon-pink transition"><i class="fab fa-twitter mr-2"></i> Twitter</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-neon-pink transition"><i class="fab fa-instagram mr-2"></i> Instagram</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-neon-pink transition"><i class="fab fa-twitch mr-2"></i> Twitch</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-neon-pink transition"><i class="fab fa-discord mr-2"></i> Discord</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-secondary mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-500 text-sm mb-4 md:mb-0">
+                    &copy; 2023 Black Arc Esports. All rights reserved.
+                </p>
+                
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-500 hover:text-white text-sm">PRIVACY POLICY</a>
+                    <a href="#" class="text-gray-500 hover:text-white text-sm">TERMS OF SERVICE</a>
+                    <a href="#" class="text-gray-500 hover:text-white text-sm">COOKIE POLICY</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+       // Mobile menu toggle
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('navMenu');
+        
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const teamCards = document.querySelectorAll('.team-card');
+        const searchInput = document.querySelector('.search-input');
+
+        let activeFilter = 'all';
+
+        function updateVisibleCards() {
+            const searchTerm = searchInput.value.toLowerCase();
+
+            teamCards.forEach(card => {
+            const category = card.dataset.category;
+            const title = card.querySelector('h3').textContent.toLowerCase();
+            const description = card.querySelector('p').textContent.toLowerCase();
+            const matchesSearch = title.includes(searchTerm) || description.includes(searchTerm);
+            const matchesFilter = activeFilter === 'all' || category === activeFilter;
+            // Only show card if it matches both search and filter
+            if (matchesSearch && matchesFilter) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+            });
+        }
+
+        // Filter button click
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            activeFilter = button.dataset.filter;
+            updateVisibleCards();
+            });
+        });
+
+        function extractRank(text) {
+        const match = text.match(/#(\d+)/);
+        return match ? parseInt(match[1]) : null;
+        }
+        // Search input
+        searchInput.addEventListener('input', updateVisibleCards);
+        // Activate default filter on load
+        if (filterButtons.length > 0) {
+            filterButtons[0].classList.add('active');
+            activeFilter = filterButtons[0].dataset.filter;
+        }
+
+        // Initial card visibility
+        updateVisibleCards();
+    </script>
+
+    <script>
+    const rankDropdown = document.getElementById('rank-filter');
+    const Cards = document.querySelectorAll('.team-card');
+
+    function extractRank(text) {
+        const match = text.match(/#(\d+)/);
+        return match ? parseInt(match[1]) : null;
+    }
+
+    function applyRankFilter() {
+        const selected = rankDropdown.value;
+
+        Cards.forEach(card => {
+        const rankElement = card.querySelector('.rank-label');
+        const rank = rankElement ? extractRank(rankElement.textContent) : null;
+
+        if (selected === 'all' || (rank && rank <= parseInt(selected))) {
+            card.classList.remove('rank-filter-hidden');
+        } else {
+            card.classList.add('rank-filter-hidden');
+        }
+        });
+
+        updateCombinedVisibility(); // reconcile this with other filters
+    }
+
+    // Combine filter visibility from rank + category + search
+    function updateCombinedVisibility() {
+        Cards.forEach(card => {
+        const hiddenByOther = card.style.display === 'none';
+        const hiddenByRank = card.classList.contains('rank-filter-hidden');
+
+        card.style.display = (hiddenByOther || hiddenByRank) ? 'none' : 'block';
+        });
+    }
+
+    rankDropdown.addEventListener('change', applyRankFilter);
+</script>
+
+
+    </body>
+</html>
